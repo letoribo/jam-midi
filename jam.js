@@ -1,6 +1,5 @@
 var jazz = require('jazz-midi')
 , Jazz = new jazz.MIDI()
-, _ = require('underscore')
 , MongoClient = require('mongodb').MongoClient
 , express = require('express')
 , http = require('http')
