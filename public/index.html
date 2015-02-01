@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html ng-app="myModule">
+<head>
+<title>Angular piano</title>
+<script src="js/angular.min.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/keys.js" type="text/javascript"></script>
+<script src="js/gmidi.js"></script>
+<link rel="stylesheet" href="./piano.css">
+<script src="js/app.js"></script>
+</head>
+<body ng-controller="myController" ng-keydown="onKeyDown($event)" ng-keyup="onKeyUp($event)">
+<div id=piano class="Center">
+<div class=ebony ng-model="keys">
+<span  ng-repeat="i in keys.b track by $index" id="{{i}}" ng-class="{'break': i == '|', 'on': isSelected(i)}" 
+ ng-mousedown="down(i)" ng-mouseup="up(i)"></span>
+</div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+<div class=ivory ng-model="keys">
+<span  ng-repeat="i in keys.w" id="{{i}}" ng-mousedown="down(i)" ng-mouseup="up(i)" ng-class="{'on': isSelected(i)}"></span> 
+</div>
+</div>
+
+<center>
+<p>
+<label>Sound: </label><select id=midiSnd ng-change='changeSnd();' ng-model="_sound" ng-init="init()">
+ <option ng-init="_sound='Drawbar Organ'" ng-repeat="i in sounds" ng-selected="{{i==_sound}}" value="{{i}}">{{i}}</option>
+</select>
+<label>Scale: </label>
+<select id=scales ng-change='changeScale();' ng-model="_scale">
+ <option ng-init="_scale='natural major'" ng-repeat="i in scales" ng-selected="{{i==_scale}}" value="{{i}}">{{i}}</option>
+</select>
+</p>
+<strong>MIDI Notes : </strong>{{note}}
+<div  class="center">
+<img src="images/keyboard.png" width="800" height="256" border="0" usemap="#Map" align="middle">
+</div>
+</center> 
+</body>
+</html>
