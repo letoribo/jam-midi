@@ -70,6 +70,25 @@ http.createServer(app).listen(3003, function () {
 });
 ```
 
+<img src="http://i.imgur.com/7KnCa5a.png" width="200"> example
+- Open [mongolab.com](https://mongolab.com) website
+- Click **Sign up** button
+- Fill in your user information then hit **Create account**
+- From the dashboard, click on **Create new** button
+- Select **any** cloud provider
+- Under *Plan* click on **Single-node (development)** tab and select **Sandbox** (it's free)
+ - *Leave MongoDB version as is
+- Enter *Database name** for your app
+- Then click on **Create new MongoDB deployment** button
+- Click to the recently created database
+- You should see the following message:
+ - *A database user is required to connect to this database.* **Click here** *to create a new one.*
+- Click the link and fill in **DB Username** and **DB Password** fields
+- Finally, in `jam.js` instead of `db: 'localhost'`, use the following URI with your credentials:
+ - `db: 'mongodb://USERNAME:PASSWORD@ds*****.mongolab.com:*****/DATABASE_NAME'`
+ ![Mongolab](http://i.imgur.com/8UBmspM.jpg)
+
+
 ## ja example (simple implementation without MongoDB)
 
 
