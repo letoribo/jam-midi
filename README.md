@@ -84,8 +84,8 @@ http.createServer(app).listen(3003, function () {
 - You should see the following message:
  - *A database user is required to connect to this database.* **Click here** *to create a new one.*
 - Click the link and fill in **DB Username** and **DB Password** fields
-- Finally, in `jam.js` instead of `db: 'localhost'`, use the following URI with your credentials:
- - `db: 'mongodb://USERNAME:PASSWORD@ds*****.mongolab.com:*****/DATABASE_NAME'`
+- Finally, in `jam.js` instead of `'mongodb://localhost:27017/npm'`, use the following URI with your credentials:
+ - `'mongodb://USERNAME:PASSWORD@ds*****.mongolab.com:*****/DATABASE_NAME'`
  ![Mongolab](http://i.imgur.com/8UBmspM.jpg)
 
 
@@ -116,7 +116,7 @@ http.createServer(app).listen(3003, function () {
   console.log("Express server listening on port 3003");
 });
 ```    
-
+<hr>
 ## Scales available:
 1. natural major,ionian
 2. natural minor,aeolian,algerian
