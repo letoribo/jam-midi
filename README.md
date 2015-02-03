@@ -30,73 +30,73 @@ and point your browser to localhost:3003
 ## jam example
 
 
-    ``` js
-    var jazz = require('jazz-midi')
-    , Jazz = new jazz.MIDI()
-    , MongoClient = require('mongodb').MongoClient
-    , express = require('express')
-    , http = require('http')
-    , path = require('path');
+``` js
+var jazz = require('jazz-midi')
+, Jazz = new jazz.MIDI()
+, MongoClient = require('mongodb').MongoClient
+, express = require('express')
+, http = require('http')
+, path = require('path');
 
-    var app = express();
-    app.use(express.static(path.join(__dirname, 'public')));
-    app.use(express.bodyParser());
-    app.use(express.favicon('public/images/favicon.ico'));
+var app = express();
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.bodyParser());
+app.use(express.favicon('public/images/favicon.ico'));
+    
+ MongoClient.connect('mongodb://localhost:27017/npm', function(err, db) {
+  if(err) throw err;
+  db.dropCollection('midi', function(err, result){});
+  var count = -1;
+  app.post('/post', function (req, res) {
+      
+    /* Handling the AngularJS post request*/
+    var msg = req.body.msg;
+    var out=Jazz.MidiOutOpen(0);
+    Jazz.MidiOutLong(msg);
+    count ++;
+    res.send(msg);
 
-    MongoClient.connect('mongodb://localhost:27017/npm', function(err, db) {
+    /* Querying MongoDB*/
+    var midi = { '_id' : count, 'msg' : msg };
+    db.collection('midi').insert(midi, function(err, inserted) {
       if(err) throw err;
-      db.dropCollection('midi', function(err, result){});
-      var count = -1;
-      app.post('/post', function (req, res) {
-
-        /* Handling the AngularJS post request*/
-        var msg = req.body.msg;
-        var out=Jazz.MidiOutOpen(0);
-        Jazz.MidiOutLong(msg);
-        count ++;
-        res.send(msg);
-
-        /* Querying MongoDB*/
-        var midi = { '_id' : count, 'msg' : msg };
-        db.collection('midi').insert(midi, function(err, inserted) {
-          if(err) throw err;
-          console.dir("Successfully inserted: " + JSON.stringify(inserted));
-        });
-      });  
+      console.dir("Successfully inserted: " + JSON.stringify(inserted));
     });
+  });  
+});
 
-    http.createServer(app).listen(3003, function () {
-      console.log("Express server listening on port 3003");
-    });
-    ```
+http.createServer(app).listen(3003, function () {
+  console.log("Express server listening on port 3003");
+});
+```
 
 ## ja example (simple implementation without MongoDB)
 
 
-    ``` js
-    var jazz = require('jazz-midi')
-    , Jazz = new jazz.MIDI()
-    , express = require('express')
-    , http = require('http'), path = require('path');
+``` js
+var jazz = require('jazz-midi')
+, Jazz = new jazz.MIDI()
+, express = require('express')
+, http = require('http'), path = require('path');
 
-    var app = express();
-    app.use(express.static(path.join(__dirname, 'public')));
-    app.use(express.bodyParser());
-    app.use(express.favicon('public/images/favicon.ico'));
-    app.post('/post', function (req, res) {
+var app = express();
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.bodyParser());
+app.use(express.favicon('public/images/favicon.ico'));
+app.post('/post', function (req, res) {
 
-      /* Handling the AngularJS post request*/
-      var msg = req.body.msg; 
-      console.log(msg); 
-      var out=Jazz.MidiOutOpen(0);
-      Jazz.MidiOutLong(msg);
-      res.send(msg);
-    });  
+  /* Handling the AngularJS post request*/
+  var msg = req.body.msg; 
+  console.log(msg); 
+  var out=Jazz.MidiOutOpen(0);
+  Jazz.MidiOutLong(msg);
+  res.send(msg);
+});  
 
-    http.createServer(app).listen(3003, function () {
-      console.log("Express server listening on port 3003");
-    });
-    ```
+http.createServer(app).listen(3003, function () {
+  console.log("Express server listening on port 3003");
+});
+```    
 
 ## Scales available:
 1. natural major,ionian
