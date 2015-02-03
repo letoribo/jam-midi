@@ -116,7 +116,7 @@ http.createServer(app).listen(3003, function () {
   console.log("Express server listening on port 3003");
 });
 ```    
-<hr>
+
 ## Scales available:
 1. natural major,ionian
 2. natural minor,aeolian,algerian
