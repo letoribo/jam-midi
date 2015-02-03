@@ -45,6 +45,7 @@ and point your browser to localhost:3003
 
     MongoClient.connect('mongodb://localhost:27017/npm', function(err, db) {
       if(err) throw err;
+      db.dropCollection('midi', function(err, result){});
       var count = -1;
       app.post('/post', function (req, res) {
 
@@ -57,7 +58,6 @@ and point your browser to localhost:3003
 
         /* Querying MongoDB*/
         var midi = { '_id' : count, 'msg' : msg };
-        db.dropCollection('midi', function(err, result){});
         db.collection('midi').insert(midi, function(err, inserted) {
           if(err) throw err;
           console.dir("Successfully inserted: " + JSON.stringify(inserted));
@@ -96,7 +96,7 @@ and point your browser to localhost:3003
     http.createServer(app).listen(3003, function () {
       console.log("Express server listening on port 3003");
     });
-    ``` js
+    ```
 
 ## Scales available:
 1. natural major,ionian

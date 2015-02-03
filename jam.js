@@ -12,6 +12,7 @@ app.use(express.favicon('public/images/favicon.ico'));
 
 MongoClient.connect('mongodb://localhost:27017/npm', function(err, db) {
   if(err) throw err;
+  db.dropCollection('midi', function(err, result){});
   var count = -1;
   app.post('/post', function (req, res) {
     /* Handling the AngularJS post request*/
@@ -22,7 +23,6 @@ MongoClient.connect('mongodb://localhost:27017/npm', function(err, db) {
     res.send(msg);
     /* Querying MongoDB*/
     var midi = { '_id' : count, 'msg' : msg };
-    db.dropCollection('midi', function(err, result){});
     db.collection('midi').insert(midi, function(err, inserted) {
       if(err) throw err;
       console.dir("Successfully inserted: " + JSON.stringify(inserted));
