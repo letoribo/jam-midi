@@ -38,6 +38,7 @@ var jazz = require('jazz-midi')
 , http = require('http')
 , path = require('path');
 
+var out=Jazz.MidiOutOpen(0);
 var app = express();
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.bodyParser());
@@ -51,7 +52,6 @@ app.use(express.favicon('public/images/favicon.ico'));
       
     /* Handling the AngularJS post request*/
     var msg = req.body.msg;
-    var out=Jazz.MidiOutOpen(0);
     Jazz.MidiOutLong(msg);
     count ++;
     res.send(msg);
@@ -77,8 +77,8 @@ http.createServer(app).listen(3003, function () {
 - From the dashboard, click on **Create new** button
 - Select **any** cloud provider
 - Under *Plan* click on **Single-node (development)** tab and select **Sandbox** (it's free)
- - *Leave MongoDB version as is
-- Enter *Database name** for your app
+ - Leave MongoDB version as is
+- Enter **Database name** for your app
 - Then click on **Create new MongoDB deployment** button
 - Click to the recently created database
 - You should see the following message:
@@ -98,6 +98,7 @@ var jazz = require('jazz-midi')
 , express = require('express')
 , http = require('http'), path = require('path');
 
+var out=Jazz.MidiOutOpen(0);
 var app = express();
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.bodyParser());
@@ -107,7 +108,6 @@ app.post('/post', function (req, res) {
   /* Handling the AngularJS post request*/
   var msg = req.body.msg; 
   console.log(msg); 
-  var out=Jazz.MidiOutOpen(0);
   Jazz.MidiOutLong(msg);
   res.send(msg);
 });  

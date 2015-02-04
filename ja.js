@@ -3,6 +3,7 @@ var jazz = require('jazz-midi')
 , express = require('express')
 , http = require('http'), path = require('path');
 
+var out=Jazz.MidiOutOpen(0);
 var app = express();
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.bodyParser());
@@ -11,7 +12,6 @@ app.use(express.favicon('public/images/favicon.ico'));
     /* Handling the AngularJS post request*/
     var msg = req.body.msg; 
     console.log(msg); 
-    var out=Jazz.MidiOutOpen(0);
     Jazz.MidiOutLong(msg);
     res.send(msg);
   });  

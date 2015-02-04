@@ -5,6 +5,7 @@ var jazz = require('jazz-midi')
 , http = require('http')
 , path = require('path');
 
+var out=Jazz.MidiOutOpen(0);
 var app = express();
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.bodyParser());
@@ -17,7 +18,6 @@ MongoClient.connect('mongodb://localhost:27017/npm', function(err, db) {
   app.post('/post', function (req, res) {
     /* Handling the AngularJS post request*/
     var msg = req.body.msg;
-    var out=Jazz.MidiOutOpen(0);
     Jazz.MidiOutLong(msg);
     count ++;
     res.send(msg);
