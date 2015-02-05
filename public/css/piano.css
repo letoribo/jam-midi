@@ -1,0 +1,36 @@
+body {color: #323E37; background: rgba(228, 222, 217, 0.76); font-family: monospace;}
+.hidden {visibility: hidden; width: 0px; height: 0px; margin: 0px; padding: 0px; border-style: none; border-width: 0px; max-width: 0px; max-height: 0px;}
+select {border-radius: 18px; border:1px dotted #0071b5; font-weight: bolder; height: 28px; background-color:#FFE; cursor: pointer; text-align: center;}
+div#piano {
+ position: relative; color: #808080; height: 82px;
+}
+div.ivory {
+ position: absolute; left: 0px; top: 0px; border-left: 1px solid; width: 1672px;
+}
+.ivory span {
+ background-color: #fffff0; padding: 0px; margin: 0px; border: 1px solid; border-left: 0px; display: inline-block; width: 21px; height: 80px; vertical-align: top;
+}
+div.ebony {
+ position: absolute; left: 0px; top: 0px; margin-left: 14px; width: 1672px;
+}
+.ebony span {
+ position: relative; z-index: 1; background-color: #111; padding: 0px; margin: 0px; border: 1px solid; display: inline-block; width: 12px; height: 56px; margin-right: 12px; vertical-align: top;
+}
+.ebony span.break {
+ border: 0px; display: inline-block; width: 1px; margin-right: 11px; visibility:hidden;
+}
+.ivory span.on {
+ background-color: #aaa;
+}
+.ebony span.on {
+ background-color: #aaa;
+}
+.Center {
+ width: 86%; height: 28%; margin: auto; margin-top: 25px; position: absolute; top: 0; left: 0; bottom: 0; right: 0; background-color: inherit;
+}
+.center {
+ width: 86%; height: 28%; margin: auto; margin-bottom: 25px; position: absolute; top: 0; left: 0; bottom: 0; right: 0; background-color: inherit;
+}
+.controls {
+ margin-top: 70px;
+}
