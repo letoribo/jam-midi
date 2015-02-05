@@ -22,6 +22,9 @@
 
 <center>
 <p>
+<label>MIDI Out:</label><select id=selectmidi ng-change="changemidi();" ng-model="_out">
+ <option ng-init="_out=list[0]" ng-repeat="i in list" ng-selected="{{i==_out}}" value="{{i}}">{{i}}</option>
+</select>
 <label>Sound: </label><select id=midiSnd ng-change='changeSnd();' ng-model="_sound" ng-init="init()">
  <option ng-init="_sound='Drawbar Organ'" ng-repeat="i in sounds" ng-selected="{{i==_sound}}" value="{{i}}">{{i}}</option>
 </select>

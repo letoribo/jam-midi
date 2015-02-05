@@ -9,11 +9,10 @@
 jam is shortcut for **J**azz **A**ngularJS **M**ongoDB
 
 
-![jam-midi](http://i.imgur.com/f37O1o4.jpg)
+![jam-midi](http://i.imgur.com/mKLIVV2.jpg)
 
 
 API reference is available at http://jazz-soft.net/doc/Jazz-Plugin/reference.html
-
 
 
 Questions and comments are welcome at http://jazz-soft.org/
