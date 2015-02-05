@@ -4,8 +4,8 @@ var jazz = require('jazz-midi')
 , express = require('express')
 , http = require('http')
 , path = require('path');
-
-var out=Jazz.MidiOutOpen(0);
+var out = Jazz.MidiOutOpen(0);
+var list = Jazz.MidiOutList();
 var app = express();
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.bodyParser());
@@ -27,6 +27,23 @@ MongoClient.connect('mongodb://localhost:27017/npm', function(err, db) {
       if(err) throw err;
       console.dir("Successfully inserted: " + JSON.stringify(inserted));
     });
+  });
+  app.post('/list', function (req, res) {
+    res.send(list);
+  });
+  app.post('/out', function (req, res) {
+    var out = req.body.out;
+    Jazz.MidiOutOpen(out);
+    var msg = req.body.msg; 
+    console.log(msg); 
+    Jazz.MidiOutLong(msg);
+    count ++;
+    /* Querying MongoDB*/
+    var midi = { '_id' : count, 'msg' : msg };
+    db.collection('midi').insert(midi, function(err, inserted) {
+      if(err) throw err;
+      console.dir("Successfully inserted: " + JSON.stringify(inserted));
+    });  
   });  
 });
 

@@ -21,8 +21,10 @@ function myController($scope, $http) {
     $('select').blur();
   };
   $scope.init = function () {
+  	 $scope.get_midioutlist();
     $scope.changeSnd();
   };
+
   steps = keys;
   if (/Firefox[\/\s](\d+\.\d+)/.test(navigator.userAgent)) {steps = _keys};
   $scope.current_scale = 0;
@@ -37,22 +39,33 @@ function myController($scope, $http) {
   };   
   
   $scope.data = {}
-  $scope.response = {}
   
   $scope.send = function (send) {
     var posting = $http({
       method: 'POST',
       url: '/post',
-      data: send,
-      processData: false
+      data: send
     })  
 
     posting.success(function (response) {
       /*executed when server responds back*/
       console.log(response);
-      $scope.response.data = response;
     });
-  }            
+  } 
+  
+  $scope.get_midioutlist = function () {
+    $http({method: 'POST', url:'/list'})           
+    .success(function (response) {
+      console.log(response);
+      $scope.list = response;
+    $scope._out = $scope.list[0];
+    });
+  }  
+  
+  $scope.changemidi = function() { var num = $.inArray($scope._out, $scope.list);
+    $http.post('/out', {out: num, msg: [0xc0, $.inArray($scope._sound, $scope.sounds), 0]});
+    $('select').blur();
+  };  
   
   $scope.onKeyDown = function ($event) {
     var theKey = arguments[0].keyCode;
