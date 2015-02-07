@@ -134,7 +134,7 @@ http.createServer(app).listen(3003, function () {
 
 ## ja example (simple implementation without MongoDB)
 
-    node jam 
+    node ja 
 
 and point your browser to localhost:3003/ja.html
 
