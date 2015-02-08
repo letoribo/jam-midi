@@ -9,8 +9,6 @@ function myController($scope, $timeout, $http) {
   $scope.modulation = 10;
   $scope.pan = 64;
   $scope.timestamps = [];
-  
-  //interval = 1000//405.4054054054054;
   $scope.state = true;
   $scope.recording = 'Rec';
   
@@ -18,7 +16,6 @@ function myController($scope, $timeout, $http) {
     $scope.state = $scope.state === false ? true: false;
     if($scope.state){
       $scope.recording = 'Rec';
-      //$timeout.cancel(timeout);
       $http({method: 'POST', url:'/OK'}).success(function (response) {
         $scope.timestamps = response;
         console.log($scope.timestamps);
@@ -26,26 +23,15 @@ function myController($scope, $timeout, $http) {
     } 
     else {
       $scope.recording = 'Stop';
-      //$scope.count=-1; 
       $http.post('/rec', {msg: [0xb0, 120, 0]}).success(function (response) {
         console.log(response);
       });
-      //tick();
       $scope.current = $.now();
     }
     $("button").blur();  
   };
-  
-  //var tick = function (){
-    /*$scope.count ++; console.log($scope.count);
-    if($scope.count >= $scope.beats) $scope.count = 0;*/
-    //$scope.time = $.now() - $scope.current;
-    /*timeout = $timeout(function() {
-      tick(); 
-    }, interval);
-  }*/
 
-  function render(time) {
+  $scope.render = function (time) {
     if (!$scope.stopped) {
       $scope.time = $.now() - $scope.starttime;
       $scope.$apply();
@@ -57,13 +43,13 @@ function myController($scope, $timeout, $http) {
           $scope.pos ++;
         }
       });      
-      $scope.requestId = window.requestAnimationFrame(render);
+      $scope.requestId = window.requestAnimationFrame($scope.render);
     }
   }
   $scope.start = function () {
   	 $scope.pos = 0;
     $scope.starttime = $.now();
-    $scope.requestId = window.requestAnimationFrame(render);
+    $scope.requestId = window.requestAnimationFrame($scope.render);
     $scope.stopped = false;
     $("button").blur();
   }
@@ -109,11 +95,17 @@ function myController($scope, $timeout, $http) {
     $scope.changeSnd();
   };
 
-  steps = keys;
-  if (/Firefox[\/\s](\d+\.\d+)/.test(navigator.userAgent)) {steps = _keys};
+  $scope.steps = keys;
+  if (/Firefox[\/\s](\d+\.\d+)/.test(navigator.userAgent)) {$scope.steps = _keys};
   $scope.current_scale = 0;
-  tonic = 0;
-  keyAllowed = {}; 
+  $scope.mode = $scope.steps[$scope.current_scale];
+  $scope.keyAllowed = {};
+  $scope.highlight = function () {
+  	 angular.forEach($scope.mode, function(value) {
+      var sel = $('#' + value); 
+      sel.addClass("col");
+    }); 
+  } 
 
   $scope.isSelected = function (id) {
     if( $scope.note.indexOf(id) > -1){
@@ -130,7 +122,6 @@ function myController($scope, $timeout, $http) {
       url: '/post',
       data: send
     })  
-
     posting.success(function (response) {
       /*executed when server responds back*/
       console.log(response);
@@ -154,21 +145,24 @@ function myController($scope, $timeout, $http) {
   
   $scope.onKeyDown = function ($event) {
     var theKey = arguments[0].keyCode;
-    if (keyAllowed [theKey] === false) return;
-    keyAllowed [theKey] = false;
+    if ($scope.keyAllowed[theKey] === false) return;
+    $scope.keyAllowed[theKey] = false;
+    var all = $('span'); all.removeClass("col");
     if (theKey == 38) {
-  	   tonic ++ ;
-      Object.keys(steps[$scope.current_scale]).map(function(value, index){
-        steps[$scope.current_scale][value] ++ ;
+      Object.keys($scope.mode).map(function(value, index){
+        $scope.mode[value] ++;
+        var sel = $('#' + $scope.mode[value]); 
+        sel.addClass("col");
       });
     }; 
     if (theKey == 40) {
-  	   tonic-- ;
-      Object.keys(steps[$scope.current_scale]).map(function(value, index){
-        steps[$scope.current_scale][value] -- ;
+      Object.keys($scope.mode).map(function(value, index){
+        $scope.mode[value] --;
+        var sel = $('#' + $scope.mode[value]); 
+        sel.addClass("col");
       })
     };    
-    var key = steps[$scope.current_scale][theKey];
+    var key = $scope.mode[theKey];
     if(key){ 
       $scope.time = $.now() - $scope.current;
       $scope.send({timestamp: $scope.time, msg: [0x90, key, $scope.volume]});
@@ -178,8 +172,8 @@ function myController($scope, $timeout, $http) {
 
   $scope.onKeyUp = function ($event) {
     var theKey = arguments[0].keyCode;
-    keyAllowed [theKey] = true;
-    var key = steps[$scope.current_scale][theKey];
+    $scope.keyAllowed [theKey] = true;
+    var key = $scope.mode[theKey];
     if(key) {
     	$scope.time = $.now() - $scope.current;
       $scope.send({timestamp: $scope.time, msg: [0x80, key, 0]});
@@ -188,7 +182,10 @@ function myController($scope, $timeout, $http) {
   };   
     
   $scope.changeScale = function() {
-    $scope.current_scale = $scope.scales.indexOf($scope._scale);
+    $scope.current_scale = $scope.scales.indexOf($scope._scale); 
+    $scope.mode = $scope.steps[$scope.current_scale];
+    var all = $('span'); all.removeClass("col");
+    $scope.highlight();
     $('select').blur();
   };
   
@@ -217,6 +214,5 @@ function myController($scope, $timeout, $http) {
   	 $scope.time = $.now() - $scope.current;
     value ? $scope.send({timestamp: $scope.time, msg: [0xb0, 64, 64]}) : $scope.send({timestamp: $scope.time, msg: [0xb0, 64, 0]});
   });
-
   
 };
