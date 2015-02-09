@@ -39,7 +39,7 @@
 <strong>MIDI Notes : </strong>{{note}}
 <p class = "controls">
  <p>
-  <button class="btn-large red" ng-click='rec();'>{{recording}}</button> <span ng-class="{'rec': recording, 'play': pos}" ng-show="time">{{time}}</span>
+  <button class="btn-large red" ng-click='rec();' ng-disabled='!stopped'>{{recording}}</button> <span ng-class="{'rec': recording, 'play': pos}" ng-show="time">{{time}}</span>
   <label class="play">Play:</label>
   <button class="btn-large" ng-click="start()">Start</button>
   <button class="btn-large" ng-click="stop()">Stop</button>

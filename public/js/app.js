@@ -93,6 +93,7 @@ function myController($scope, $timeout, $http) {
   $scope.init = function () {
   	 $scope.get_midioutlist();
     $scope.changeSnd();
+    $scope.stopped = true;
   };
 
   $scope.steps = keys;
@@ -161,6 +162,9 @@ function myController($scope, $timeout, $http) {
         var sel = $('#' + $scope.mode[value]); 
         sel.addClass("col");
       })
+    };
+    if (theKey == 32 && $scope.stopped) {
+      $scope.rec();
     };    
     var key = $scope.mode[theKey];
     if(key){ 
