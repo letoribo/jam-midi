@@ -1,7 +1,7 @@
 {
   "name": "jam-midi",
-  "version": "1.1.4",
-  "description": "Low-level MIDI support",
+  "version": "1.1.5",
+  "description": "CRUD MIDI",
   "main": "jam.js",
   "repository": "https://github.com/letoribo/jam-midi.git",
   "keywords": [
@@ -9,6 +9,7 @@
     "piano",
     "sound",
     "recording",
+    "CRUD",
     "AngularJS",
     "MongoDB"
   ],
