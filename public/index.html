@@ -46,25 +46,25 @@
  </p>
  <p>
   <label>Volume: </label>{{volume}}
-  <div title="volume" ng-jquery-plugin="{ slider : { min: 0,	max: 127, value: volume, stop : changeVolume } }"></div>
+  <div title="volume" ng-jquery-plugin="{ slider : { min: 0, max: 127, value: volume, stop : changeVolume } }"></div>
  </p>
  <p>
   <label>Modulation: </label>{{modulation}}
-  <div title="modulation" ng-jquery-plugin="{ slider : { min: 0,	max: 127, value: modulation, stop : changeModulation } }"></div>
+  <div title="modulation" ng-jquery-plugin="{ slider : { min: 0, max: 127, value: modulation, stop : changeModulation } }"></div>
  </p>
  <p>
   <label>Pan: </label>{{pan}}
-  <div title="pan" ng-jquery-plugin="{ slider : { min: 0,	max: 127, value: pan, stop : changePan } }"></div>
+  <div title="pan" ng-jquery-plugin="{ slider : { min: 0, max: 127, value: pan, stop : changePan } }"></div>
  </p>
 </p>
 
-<form id="form" ng-submit="submit()" ng-init="getSongsList()">
+<form ng-submit="submit()">
   Enter jam name and hit enter:
-  <input type="text" id="text" ng-model="text" ng-focus="setDisabled()" ng-click="SelectAll('#text')" /> 
+  <input type="text" id="text" ng-model="text" ng-focus="setDisabled()" ng-click="SelectAll('#text')" />  <!-- ng-blur="submit()" -->
   <input type="submit" class="red" value="Submit" />
   <ul>
-    <li ng-repeat="jam in items" ng-show="jam" ng-click="retrieve(jam)"><b>{{jam}}</b>
-     <img src="images/close-icon.png" id="destroy" align="right" ng-mousedown="drop(jam)">
+    <li ng-repeat="jam in items" ng-show="jam" ng-click="retrieve(jam)"><strong>{{jam}}</strong>
+     <img src="images/close-icon.png" id="destroy" ng-mousedown="drop(jam)">
     </li>         
   </ul>
 </form>

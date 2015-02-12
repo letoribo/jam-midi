@@ -239,7 +239,7 @@ function myController($scope, $timeout, $http) {
   $scope.items = [];
   $scope.text = '';
   $scope.submit = function() { 
-    var text = this.text.slice(0, 20);
+    var text = this.text.slice(0, 23);
     if (text !== "" && $scope.items.indexOf(text) == -1)
     $scope.items.push(text); console.log($scope.items);
     $("input").blur();

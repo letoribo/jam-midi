@@ -37,6 +37,8 @@ div.ebony {
 .red:hover { background-color: #FF2424;}
 .play {background-color: #BACCDF;}
 .ivory span.col, .ebony span.col { background-color: #E9D9E3;}
-li { border:1px solid #aaa; list-style-type: circle; width: 270px;}
+li { border:1px solid #aaa; list-style-type: circle; width: 280px; height: 25px; position: relative; display: table;}
+strong {vertical-align: middle; display: table-cell}
 li:hover { background-color: #EFEFEF;}
+#destroy {position: absolute; right: 0;}
 #destroy:hover { border:1px dotted red;}
