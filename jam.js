@@ -52,9 +52,9 @@ MongoClient.connect('mongodb://localhost:27017/npm', function(err, db) {
       if (row) { //console.dir(row);
       var msg = row.msg;
       Jazz.MidiOutLong(msg);
+      res.send(msg);
       }
     });
-    res.send(id);
   });
   app.post('/drop', function (req, res) {
   	 if (req.body.song)

@@ -46,7 +46,12 @@ function myController($scope, $timeout, $http) {
       $scope.$watch('time', function(value) {
         var moment = $scope.timestamps[$scope.pos];
         if (value >= moment) {//console.log($scope.pos, moment);
-          $http.post('/play', {_id: moment});
+          $http.post('/play', {_id: moment}).success(function (response) {
+            var id = response[1];
+            var status = response[0];
+            if (status == 144) $scope.note.push(id);
+            if (status == 128) $scope.note.splice($scope.note.indexOf(id),1);           
+          });    
           $scope.pos ++;
         }
       });      
