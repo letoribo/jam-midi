@@ -1,6 +1,6 @@
 body {color: #323E37; background: rgba(228, 222, 217, 0.76); font-family: monospace;}
 .hidden {visibility: hidden; width: 0px; height: 0px; margin: 0px; padding: 0px; border-style: none; border-width: 0px; max-width: 0px; max-height: 0px;}
-select {border-radius: 18px; border:1px dotted #0071b5; font-weight: bolder; height: 28px; background-color:#FFE; cursor: pointer; text-align: center;}
+select, input {border-radius: 18px; border:1px dotted #0071b5; font-weight: bolder; height: 28px; background-color:#FFE; cursor: pointer; text-align: center;}
 div#piano {
  position: relative; color: #808080; height: 82px;
 }
@@ -19,26 +19,24 @@ div.ebony {
 .ebony span.break {
  border: 0px; display: inline-block; width: 1px; margin-right: 11px; visibility:hidden;
 }
-.ivory span.on {
- background-color: #aaa;
-}
-.ebony span.on {
+.ivory span.on, .ebony span.on {
  background-color: #aaa;
 }
 .Center {
- width: 86%; height: 28%; margin: auto; margin-top: 25px; position: absolute; top: 0; left: 0; bottom: 0; right: 0; background-color: inherit;
+ width: 86%; height: 28%; margin: auto; margin-top: 25px; position: absolute; top: 0; left: 0; bottom: 0; right: 0;
 }
 .center {
- width: 86%; height: 28%; margin: auto; margin-bottom: 25px; position: absolute; top: 0; left: 0; bottom: 0; right: 0; background-color: inherit;
+ margin: auto; position: absolute; left: 0; bottom: 25px; right: 0;
 }
 .controls {
  margin-top: 70px;
 }
 .btn-large {padding: 8px 15px; font-size: 17.5px; -webkit-border-radius: 6px; -moz-border-radius: 6px; border-radius: 6px;  cursor: pointer;}
 .btn-large:hover { background-color: #BACCDF;}
-.red {background-color: rgba(186, 44, 44, 0.28);}
+.red, .rec {background-color: rgba(186, 44, 44, 0.28);}
 .red:hover { background-color: #FF2424;}
-.rec {background-color: rgba(186, 44, 44, 0.28);}
 .play {background-color: #BACCDF;}
-.ivory span.col { background-color: #E9D9E3;}
-.ebony span.col { background-color: #E9D9E3;}
+.ivory span.col, .ebony span.col { background-color: #E9D9E3;}
+li { border:1px solid #aaa; list-style-type: circle; width: 270px;}
+li:hover { background-color: #EFEFEF;}
+#destroy:hover { border:1px dotted red;}

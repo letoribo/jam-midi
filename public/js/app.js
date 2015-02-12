@@ -12,18 +12,25 @@ function myController($scope, $timeout, $http) {
   $scope.state = true;
   $scope.recording = 'Rec';
   
+  $scope.retrieve = function(name) { $scope.text = name;
+    $http.post('/OK', {song: name}).success(function (response) {
+      $scope.timestamps = response;
+      console.log($scope.timestamps);
+    });
+  };  
+  
   $scope.rec = function() {
-    $scope.state = $scope.state === false ? true: false;
+  	 var text = $scope.text;
+  	 if (text == "") return null; 
+    $scope.state = !$scope.state;
+    
     if($scope.state){
       $scope.recording = 'Rec';
-      $http({method: 'POST', url:'/OK'}).success(function (response) {
-        $scope.timestamps = response;
-        console.log($scope.timestamps);
-      });
+      if (text) $scope.retrieve(text);
     } 
     else {
       $scope.recording = 'Stop';
-      $http.post('/rec', {msg: [0xb0, 120, 0]}).success(function (response) {
+      $http.post('/rec', {song: text, msg: [0xb0, 120, 0]}).success(function (response) {
         console.log(response);
       });
       $scope.current = $.now();
@@ -38,8 +45,8 @@ function myController($scope, $timeout, $http) {
 
       $scope.$watch('time', function(value) {
         var moment = $scope.timestamps[$scope.pos];
-        if (value >= moment) {
-          $scope._send({_id: moment});
+        if (value >= moment) {//console.log($scope.pos, moment);
+          $http.post('/play', {_id: moment});
           $scope.pos ++;
         }
       });      
@@ -47,6 +54,8 @@ function myController($scope, $timeout, $http) {
     }
   }
   $scope.start = function () {
+  	 var text = $scope.text;
+  	 if (text !== "") $http.post('/play', {song: text});
   	 $scope.pos = 0;
     $scope.starttime = $.now();
     $scope.requestId = window.requestAnimationFrame($scope.render);
@@ -62,14 +71,7 @@ function myController($scope, $timeout, $http) {
     $scope.pos = null;
     $("button").blur();
   }
-        
-  $scope._send = function (send) {
-    $http({
-      method: 'POST',
-      url: '/play',
-      data: send
-    });     
-  } 
+
   $scope.keys = {
     b: [1,3,'|',6,8,10,'|',13,15,'|',18,20,22,'|',25,27,'|',30,32,34,'|',37,39,'|',42,44,46,'|',49,51,'|',54,56,58,'|',61,63,'|',66,68,70,'|',73,75,'|',78,80,82,'|',85,87,'|',90,92,94,'|',97,99,'|',102,104,106,'|',109,111,'|',114,116,118,'|',121,123,'|',126],
     w: [0,2,4,5,7,9,11,12,14,16,17,19,21,23,24,26,28,29,31,33,35,36,38,40,41,43,45,47,48,50,52,53,55,57,59,60,62,64,65,67,69,71,72,74,76,77,79,81,83,84,86,88,89,91,93,95,96,98,100,101,103,105,107,108,110,112,113,115,117,119,120,122,124,125,127]
@@ -96,13 +98,12 @@ function myController($scope, $timeout, $http) {
     $scope.stopped = true;
   };
 
-  $scope.steps = keys;
-  if (/Firefox[\/\s](\d+\.\d+)/.test(navigator.userAgent)) {$scope.steps = _keys};
+  steps = keys;
+  if (/Firefox[\/\s](\d+\.\d+)/.test(navigator.userAgent)) {steps = _keys};
   $scope.current_scale = 0;
-  $scope.mode = $scope.steps[$scope.current_scale];
-  $scope.keyAllowed = {};
+  keyAllowed = {};
   $scope.highlight = function () {
-  	 angular.forEach($scope.mode, function(value) {
+  	 angular.forEach(steps[$scope.current_scale], function(value) {
       var sel = $('#' + value); 
       sel.addClass("col");
     }); 
@@ -123,6 +124,7 @@ function myController($scope, $timeout, $http) {
       url: '/post',
       data: send
     })  
+
     posting.success(function (response) {
       /*executed when server responds back*/
       console.log(response);
@@ -136,37 +138,53 @@ function myController($scope, $timeout, $http) {
       $scope.list = response;
       $scope._out = $scope.list[0];
     });
-  }  
+  } 
   
-  $scope.changemidi = function() { var num = $.inArray($scope._out, $scope.list);
+  $scope.getSongsList = function () {
+    $http({method: 'POST', url:'/songs'})           
+    .success(function (response) {
+      console.log(response);
+      $scope.items = response;
+    });
+  } 
+  
+  $scope.drop = function(li) {
+    $http.post('/drop', {song: li});
+    $scope.getSongsList();
+    $scope.text = '';
+  }
+  
+  $scope.changemidi = function() {
     $scope.time = $.now() - $scope.current;
+    var num = $.inArray($scope._out, $scope.list); 
     $http.post('/out', {out: num, timestamp: $scope.time, msg: [0xc0, $.inArray($scope._sound, $scope.sounds), 0]});
     $('select').blur();
   };  
   
   $scope.onKeyDown = function ($event) {
     var theKey = arguments[0].keyCode;
-    if ($scope.keyAllowed[theKey] === false) return;
-    $scope.keyAllowed[theKey] = false;
+    if (keyAllowed [theKey] === false) return;
+    keyAllowed [theKey] = false;
     var all = $('span'); all.removeClass("col");
     if (theKey == 38) {
-      Object.keys($scope.mode).map(function(value, index){
-        $scope.mode[value] ++;
-        var sel = $('#' + $scope.mode[value]); 
+      Object.keys(steps[$scope.current_scale]).map(function(value, index){
+        steps[$scope.current_scale][value] ++;
+        var sel = $('#' + steps[$scope.current_scale][value]); 
         sel.addClass("col");
       });
     }; 
     if (theKey == 40) {
-      Object.keys($scope.mode).map(function(value, index){
-        $scope.mode[value] --;
-        var sel = $('#' + $scope.mode[value]); 
+      Object.keys(steps[$scope.current_scale]).map(function(value, index){
+        steps[$scope.current_scale][value] --;
+        var sel = $('#' + steps[$scope.current_scale][value]); 
         sel.addClass("col");
       })
     };
     if (theKey == 32 && $scope.stopped) {
+    	if ($scope.typing) return null;
       $scope.rec();
     };    
-    var key = $scope.mode[theKey];
+    var key = steps[$scope.current_scale][theKey];
     if(key){ 
       $scope.time = $.now() - $scope.current;
       $scope.send({timestamp: $scope.time, msg: [0x90, key, $scope.volume]});
@@ -176,8 +194,8 @@ function myController($scope, $timeout, $http) {
 
   $scope.onKeyUp = function ($event) {
     var theKey = arguments[0].keyCode;
-    $scope.keyAllowed [theKey] = true;
-    var key = $scope.mode[theKey];
+    keyAllowed [theKey] = true;
+    var key = steps[$scope.current_scale][theKey];
     if(key) {
     	$scope.time = $.now() - $scope.current;
       $scope.send({timestamp: $scope.time, msg: [0x80, key, 0]});
@@ -186,8 +204,7 @@ function myController($scope, $timeout, $http) {
   };   
     
   $scope.changeScale = function() {
-    $scope.current_scale = $scope.scales.indexOf($scope._scale); 
-    $scope.mode = $scope.steps[$scope.current_scale];
+    $scope.current_scale = $scope.scales.indexOf($scope._scale);
     var all = $('span'); all.removeClass("col");
     $scope.highlight();
     $('select').blur();
@@ -219,4 +236,26 @@ function myController($scope, $timeout, $http) {
     value ? $scope.send({timestamp: $scope.time, msg: [0xb0, 64, 64]}) : $scope.send({timestamp: $scope.time, msg: [0xb0, 64, 0]});
   });
   
+  $scope.items = [];
+  $scope.text = '';
+  $scope.submit = function() { 
+    var text = this.text.slice(0, 20);
+    if (text !== "" && $scope.items.indexOf(text) == -1)
+    $scope.items.push(text); console.log($scope.items);
+    $("input").blur();
+    $scope.typing = null;
+  };
+  $scope.SelectAll = function(id) {
+    $(id).focus().select();
+  } 
+  $scope.minimize = function(id) {
+    $(id).attr( "width", 0 ).attr( "height", 0 );
+  } 
+  $scope.typing = function() {
+    return true;
+  }
+
+  $scope.setDisabled = function() {
+  	 $scope.typing = true;
+  }
 };

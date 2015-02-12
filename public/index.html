@@ -39,7 +39,7 @@
 <strong>MIDI Notes : </strong>{{note}}
 <p class = "controls">
  <p>
-  <button class="btn-large red" ng-click='rec();' ng-disabled='!stopped'>{{recording}}</button> <span ng-class="{'rec': recording, 'play': pos}" ng-show="time">{{time}}</span>
+  <button class="btn-large red" ng-disabled='!stopped || typing' ng-click="rec()">{{recording}}</button> <span ng-class="{'rec': recording, 'play': pos}" ng-show="time">{{time}}</span>
   <label class="play">Play:</label>
   <button class="btn-large" ng-click="start()">Start</button>
   <button class="btn-large" ng-click="stop()">Stop</button>
@@ -58,9 +58,20 @@
  </p>
 </p>
 
+<form id="form" ng-submit="submit()" ng-init="getSongsList()">
+  Enter jam name and hit enter:
+  <input type="text" id="text" ng-model="text" ng-focus="setDisabled()" ng-click="SelectAll('#text')" /> 
+  <input type="submit" class="red" value="Submit" />
+  <ul>
+    <li ng-repeat="jam in items" ng-show="jam" ng-click="retrieve(jam)"><b>{{jam}}</b>
+     <img src="images/close-icon.png" id="destroy" align="right" ng-mousedown="drop(jam)">
+    </li>         
+  </ul>
+</form>
 <div class="center">
- <img src="images/keyboard.png" width="600" height="192" ng-style="myStyle" ng-click="myStyle={opacity:0}" title="click to hide">
+ <img src="images/keyboard.png" id="img" width="600" height="192" ng-click="minimize('#img')" title="click to hide">
 </div>
 </center> 
+
 </body>
 </html>

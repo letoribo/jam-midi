@@ -6,42 +6,62 @@ var jazz = require('jazz-midi')
 , path = require('path');
 var out = Jazz.MidiOutOpen(0);
 var list = Jazz.MidiOutList();
+var song;
 var app = express();
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.bodyParser());
 app.use(express.favicon('public/images/favicon.ico'));
- 
+
 MongoClient.connect('mongodb://localhost:27017/npm', function(err, db) {
   if(err) throw err;
-  db.dropCollection('midi', function(err, result){});  
-  /* Handling the AngularJS post request*/
+  db.dropCollection(song, function(err, result){});  
+  /// Handling the AngularJS post request/
   app.post('/post', function (req, res) {
     var msg = req.body.msg;
     Jazz.MidiOutLong(msg);
-    res.send(msg);
+    res.send("received: " + msg);
     var timestamp = req.body.timestamp; 
     var midi = { '_id' : timestamp, 'msg' : msg };
-    insert(midi);
+    if (song) insert(song, midi);
   });
   app.post('/list', function (req, res) {
     res.send(list);
   });
+  app.post('/songs', function (req, res) {
+    db.collections(function(err, collections){
+  	   var colls = collections.map(function(obj){
+        return obj.collectionName === "system.indexes" ? null : obj.collectionName;
+      });
+  	 	res.send(colls);
+    });
+  });
   app.post('/rec', function (req, res) {
+  	 if (req.body.song) song = req.body.song;
   	 var msg = req.body.msg;
     Jazz.MidiOutLong(msg);
-    res.send(msg);
-    db.dropCollection('midi', function(err, result){});
-    console.dir("database cleaned");
+    res.send(song);
+    db.dropCollection(song, function(err, result){});
+    console.dir("database " + song + " cleaned");
   });
   app.post('/play', function (req, res) {
   	 var id = req.body;
-  	 db.collection('midi').findOne(id, function(err, row) {
+  	 if (req.body.song)
+  	 song = req.body.song;
+  	 db.collection(song).findOne(id, function(err, row) {
       if(err) throw err;
+      if (row) { //console.dir(row);
       var msg = row.msg;
       Jazz.MidiOutLong(msg);
-      console.dir(msg);
+      }
     });
     res.send(id);
+  });
+  app.post('/drop', function (req, res) {
+  	 if (req.body.song)
+  	 song = req.body.song;
+  	 db.dropCollection(song, function(err, result){});
+      console.log('drop: ' + song);
+    res.send('drop: ' + song);
   });
   app.post('/out', function (req, res) {
     var out = req.body.out;
@@ -51,16 +71,17 @@ MongoClient.connect('mongodb://localhost:27017/npm', function(err, db) {
     res.send(msg); 
     var timestamp = req.body.timestamp;
     var midi = { '_id' : timestamp, 'msg' : msg };
-    insert(midi);  
+    insert(song, midi);  
   });
   app.post('/OK', function (req, res) {
-    var cursor = db.collection('midi').find();	
+  	 var song = req.body.song;
+    var cursor = db.collection(song).find();	
     cursor.toArray(function(err, docs){
       var timestamps = docs.map(function(obj){
         return obj._id;
       });
       res.send(timestamps);
-      console.log("retrieved records:");
+      console.log("retrieved from: " + song);
       console.log(docs);
     });
   });
@@ -70,8 +91,8 @@ MongoClient.connect('mongodb://localhost:27017/npm', function(err, db) {
     res.send(msg);
   }); 
   /* Querying MongoDB*/
-  var insert = function (midi) {
-  	 db.collection('midi').insert(midi, function(err, inserted) {
+  var insert = function (song, midi) {
+  	 db.collection(song).insert(midi, function(err, inserted) {
       if(err) throw err;
       console.dir("Successfully inserted: " + JSON.stringify(inserted));
     });
