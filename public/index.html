@@ -58,7 +58,7 @@
  </p>
 </p>
 
-<form ng-submit="submit()">
+<form ng-submit="submit()" ng-init="getSongsList()">
   Enter jam name and hit enter:
   <input type="text" id="text" ng-model="text" ng-focus="setDisabled()" ng-click="SelectAll('#text')" />  <!-- ng-blur="submit()" -->
   <input type="submit" class="red" value="Submit" />
