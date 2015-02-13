@@ -38,12 +38,10 @@
   <input type="checkbox" ng-model="checked">
 <strong>MIDI Notes : </strong>{{note}}
 <p class = "controls">
- <p>
   <button class="btn-large red" ng-disabled='!stopped || typing' ng-click="rec()">{{recording}}</button> 
   <span ng-class="{'rec': recording, 'play': pos}" ng-show="time">{{time}}</span>
   <label class="play">Play:</label>
   <button class="btn-large" ng-disabled="!state || !text" ng-click="play()">{{playing}}</button>
- </p>
  <p>
   <label>Volume: </label>{{volume}}
   <div title="volume" ng-jquery-plugin="{ slider : { min: 0, max: 127, value: volume, stop : changeVolume } }"></div>

@@ -46,8 +46,9 @@ function myController($scope, $timeout, $http) {
       $scope.$apply();
 
       $scope.$watch('time', function(value) {
+        var jiff = value + $scope.timestamps[0];
         var moment = $scope.timestamps[$scope.pos];
-        if (value >= moment) {//console.log($scope.pos, moment);
+        if (jiff >= moment) {
           $http.post('/play', {_id: moment}).success(function (response) {
             var id = response[1];
             var status = response[0];
@@ -60,25 +61,6 @@ function myController($scope, $timeout, $http) {
       $scope.requestId = window.requestAnimationFrame($scope.render);
     }
   }
-  /*$scope.start = function () {
-  	 var text = $scope.text;
-  	 if (text !== "") $http.post('/play', {song: text});
-  	 $scope.pos = 0;
-    $scope.starttime = $.now();
-    $scope.requestId = window.requestAnimationFrame($scope.render);
-    $scope.stopped = false;
-    $("button").blur();
-  }
-  $scope.stop = function () {
-  	 $http.post('/panic', {msg: [0xb0, 120, 0]});
-    if ($scope.requestId) {
-      window.cancelAnimationFrame($scope.requestId);
-    }
-    $scope.stopped = true;
-    $scope.pos = null;
-    $("button").blur();
-  }*/
-  
   $scope.play = function() {
     $scope.State = !$scope.State;   
     if($scope.State){
