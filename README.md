@@ -7,7 +7,7 @@
 jam is shortcut for **J**azz **A**ngularJS **M**ongoDB
 
 
-![jam-midi](http://i.imgur.com/spkW9Ww.jpg)
+![jam-midi](http://i.imgur.com/pL5d0K7.jpg)
 
 
 API reference is available at http://jazz-soft.net/doc/Jazz-Plugin/reference.html
