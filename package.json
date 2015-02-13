@@ -1,6 +1,6 @@
 {
   "name": "jam-midi",
-  "version": "1.1.9",
+  "version": "1.2.0",
   "description": "CRUD MIDI",
   "main": "jam.js",
   "repository": "https://github.com/letoribo/jam-midi.git",
