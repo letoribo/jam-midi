@@ -44,12 +44,13 @@ app.use(express.favicon('public/images/favicon.ico'));
 MongoClient.connect('mongodb://localhost:27017/npm', function(err, db) {
   if(err) throw err;
   db.dropCollection(song, function(err, result){});  
-  /// Handling the AngularJS post request/
+  /*Handling the AngularJS post request*/
   app.post('/post', function (req, res) {
     var msg = req.body.msg;
     Jazz.MidiOutLong(msg);
     res.send("received: " + msg);
-    var timestamp = req.body.timestamp; 
+    var timestamp = req.body.timestamp;
+    if (!timestamp) song = false; 
     var midi = { '_id' : timestamp, 'msg' : msg };
     if (song) insert(song, midi);
   });
@@ -78,10 +79,10 @@ MongoClient.connect('mongodb://localhost:27017/npm', function(err, db) {
   	 song = req.body.song;
   	 db.collection(song).findOne(id, function(err, row) {
       if(err) throw err;
-      if (row) { //console.dir(row);
-      var msg = row.msg;
-      Jazz.MidiOutLong(msg);
-      res.send(msg);
+      if (row) {
+        var msg = row.msg;
+        Jazz.MidiOutLong(msg);
+        res.send(msg);
       }
     });
   });
@@ -89,7 +90,7 @@ MongoClient.connect('mongodb://localhost:27017/npm', function(err, db) {
   	 if (req.body.song)
   	 song = req.body.song;
   	 db.dropCollection(song, function(err, result){});
-      console.log('drop: ' + song);
+    console.log('drop: ' + song);
     res.send('drop: ' + song);
   });
   app.post('/out', function (req, res) {
@@ -99,6 +100,7 @@ MongoClient.connect('mongodb://localhost:27017/npm', function(err, db) {
     Jazz.MidiOutLong(msg);     
     res.send(msg); 
     var timestamp = req.body.timestamp;
+    if (!timestamp) song = false;
     var midi = { '_id' : timestamp, 'msg' : msg };
     insert(song, midi);  
   });
@@ -123,7 +125,7 @@ MongoClient.connect('mongodb://localhost:27017/npm', function(err, db) {
   var insert = function (song, midi) {
   	 db.collection(song).insert(midi, function(err, inserted) {
       if(err) throw err;
-      console.dir("Successfully inserted: " + JSON.stringify(inserted));
+      console.dir("Inserted into: " + song + " " + JSON.stringify(inserted));
     });
   } 
 });
