@@ -75,13 +75,11 @@ function myController($scope, $timeout, $http) {
       $("button").blur();
     } 
     else {
-      $scope.playing = 'Stop';
-      var text = $scope.text;
-  	   if (text !== "") $http.post('/play', {song: text});
-  	   $scope.pos = 0;
+      $scope.pos = 0;
       $scope.starttime = $.now();
       $scope.requestId = window.requestAnimationFrame($scope.render);
       $scope.stopped = false;
+      $scope.playing = 'Stop';
       $("button").blur();  
     };  
   };
