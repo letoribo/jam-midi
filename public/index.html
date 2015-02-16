@@ -69,6 +69,36 @@
 <div class="center">
  <img src="images/keyboard.png" id="img" width="600" height="192" ng-click="minimize('#img')" title="click to hide">
 </div>
+<table>
+  <tr ng-repeat="m in msg">
+    <td>{{ m }}</td>  
+  </tr>
+</table>
+
+<table>
+  <tr ng-repeat="ms in row" ng-show="row[0].one">
+   <th>ms</th>
+    <td ng-show="row[0].one">{{ ms.one._id - timestamps[0] }}</td>
+    <td ng-show="row[0].two">{{ ms.two._id - timestamps[0] }}</td>
+    <td ng-show="row[0].three">{{ ms.three._id - timestamps[0] }}</td>
+    <td ng-show="row[0].four">{{ ms.four._id - timestamps[0] }}</td>
+    <td ng-show="row[0].five">{{ ms.five._id - timestamps[0] }}</td>
+    <td ng-show="row[0].six">{{ ms.six._id - timestamps[0] }}</td>
+    <td ng-show="row[0].seven">{{ ms.seven._id - timestamps[0] }}</td>
+    <td ng-show="row[0].eight">{{ ms.eight._id - timestamps[0] }}</td>
+  </tr>
+  <tr ng-repeat="m in row" ng-show="row[0].one">
+   <th>msg</th> 
+    <td ng-show="row[0].one">{{ m.one.msg }}</td>
+    <td ng-show="row[0].two">{{ m.two.msg }}</td>
+    <td ng-show="row[0].three">{{ m.three.msg }}</td>
+    <td ng-show="row[0].four">{{ m.four.msg }}</td>
+    <td ng-show="row[0].five">{{ m.five.msg }}</td>
+    <td ng-show="row[0].six">{{ m.six.msg }}</td>
+    <td ng-show="row[0].seven">{{ m.seven.msg }}</td>
+    <td ng-show="row[0].eight">{{ m.eight.msg }}</td>
+  </tr>
+</table>
 </center> 
 
 </body>

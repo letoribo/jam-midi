@@ -10,7 +10,7 @@ var app = express();
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.bodyParser());
 app.use(express.favicon('public/images/favicon.ico'));
-var db, song;
+var db, song, Song;
 
 MongoClient.connect('mongodb://localhost:27017/npm', function(err, database) {
   if(err) throw err;
@@ -24,7 +24,7 @@ MongoClient.connect('mongodb://localhost:27017/npm', function(err, database) {
 app.post('/post', function (req, res) {
   var msg = req.body.msg;
   Jazz.MidiOutLong(msg);
-  res.send("received: " + msg);
+  res.send(msg);
   var timestamp = req.body.timestamp;
   if (!timestamp) song = false; 
   var midi = { '_id' : timestamp, 'msg' : msg };
@@ -51,7 +51,7 @@ app.post('/rec', function (req, res) {
 });
 app.post('/play', function (req, res) {
   var id = req.body;
-  db.collection(song).findOne(id, function(err, row) {
+  db.collection(Song).findOne(id, function(err, row) {
     if(err) throw err;
     if (row) {
       var msg = row.msg;
@@ -88,6 +88,13 @@ app.post('/OK', function (req, res) {
     res.send(timestamps);
     console.log("retrieved from: " + song);
     console.log(docs);
+  });
+});
+app.post('/All', function (req, res) {
+  Song = req.body.song;
+  var cursor = db.collection(song).find();	
+  cursor.toArray(function(err, docs){
+   res.send(docs);
   });
 });
 app.post('/panic', function (req, res) {
