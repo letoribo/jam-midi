@@ -53,3 +53,7 @@ table tr:nth-child(odd) {
 table tr:nth-child(even) {
   background-color: #ffffff;
 }
+.On {color: blue}
+.Off {color: green }
+.Control {color: #A069AA;}
+.Program {color: rgb(255, 148, 0)}

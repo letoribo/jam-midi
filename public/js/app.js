@@ -64,9 +64,9 @@ function myController($scope, $timeout, $http) {
           $http.post('/play', {_id: moment}).success(function (response) {
           	$scope.msg = response;
             var id = response[1];
-            var status = response[0];
-            if (status == 144) $scope.note.push(id);
-            if (status == 128) $scope.note.splice($scope.note.indexOf(id),1);           
+            $scope.status = response[0];
+            if ($scope.status == 144) $scope.note.push(id);
+            if ($scope.status == 128) $scope.note.splice($scope.note.indexOf(id),1);           
           });    
           $scope.pos ++; $scope.table($scope.pos);
         }

@@ -59,7 +59,7 @@
 </div>
 <table>
   <tr ng-repeat="m in msg">
-    <td>{{ m }}</td>  
+    <td ng-class="{'On': msg[0] == 144, 'Off': msg[0] == 128, 'Control': msg[0] == 176, 'Program': msg[0] == 192}">{{ m }}</td>  
   </tr>
 </table>
 </center> 

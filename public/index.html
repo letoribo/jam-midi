@@ -71,7 +71,7 @@
 </div>
 <table>
   <tr ng-repeat="m in msg">
-    <td>{{ m }}</td>  
+    <td ng-class="{'On': msg[0] == 144, 'Off': msg[0] == 128, 'Control': msg[0] == 176, 'Program': msg[0] == 192}">{{ m }}</td>  
   </tr>
 </table>
 
@@ -89,14 +89,14 @@
   </tr>
   <tr ng-repeat="m in row" ng-show="row[0].one">
    <th>msg</th> 
-    <td ng-show="row[0].one">{{ m.one.msg }}</td>
-    <td ng-show="row[0].two">{{ m.two.msg }}</td>
-    <td ng-show="row[0].three">{{ m.three.msg }}</td>
-    <td ng-show="row[0].four">{{ m.four.msg }}</td>
-    <td ng-show="row[0].five">{{ m.five.msg }}</td>
-    <td ng-show="row[0].six">{{ m.six.msg }}</td>
-    <td ng-show="row[0].seven">{{ m.seven.msg }}</td>
-    <td ng-show="row[0].eight">{{ m.eight.msg }}</td>
+    <td ng-show="row[0].one" ng-class="{'On': m.one.msg[0] == 144, 'Off': m.one.msg[0] == 128, 'Control': m.one.msg[0] == 176, 'Program': m.one.msg[0] == 192}">{{ m.one.msg }}</td>
+    <td ng-show="row[0].two" ng-class="{'On': m.two.msg[0] == 144, 'Off': m.two.msg[0] == 128, 'Control': m.two.msg[0] == 176, 'Program': m.two.msg[0] == 192}">{{ m.two.msg }}</td>
+    <td ng-show="row[0].three" ng-class="{'On': m.three.msg[0] == 144, 'Off': m.three.msg[0] == 128, 'Control': m.three.msg[0] == 176, 'Program': m.three.msg[0] == 192}">{{ m.three.msg }}</td>
+    <td ng-show="row[0].four" ng-class="{'On': m.four.msg[0] == 144, 'Off': m.four.msg[0] == 128, 'Control': m.four.msg[0] == 176, 'Program': m.four.msg[0] == 192}">{{ m.four.msg }}</td>
+    <td ng-show="row[0].five" ng-class="{'On': m.five.msg[0] == 144, 'Off': m.five.msg[0] == 128, 'Control': m.five.msg[0] == 176, 'Program': m.five.msg[0] == 192}">{{ m.five.msg }}</td>
+    <td ng-show="row[0].six" ng-class="{'On': m.six.msg[0] == 144, 'Off': m.six.msg[0] == 128, 'Control': m.six.msg[0] == 176, 'Program': m.six.msg[0] == 192}">{{ m.six.msg }}</td>
+    <td ng-show="row[0].seven" ng-class="{'On': m.seven.msg[0] == 144, 'Off': m.seven.msg[0] == 128, 'Control': m.seven.msg[0] == 176, 'Program': m.seven.msg[0] == 192}">{{ m.seven.msg }}</td>
+    <td ng-show="row[0].eight" ng-class="{'On': m.eight.msg[0] == 144, 'Off': m.eight.msg[0] == 128, 'Control': m.eight.msg[0] == 176, 'Program': m.eight.msg[0] == 192}">{{ m.eight.msg }}</td>
   </tr>
 </table>
 </center> 
