@@ -1,6 +1,6 @@
 body {color: #323E37; background: rgba(228, 222, 217, 0.76); font-family: monospace;}
 .hidden {visibility: hidden; width: 0px; height: 0px; margin: 0px; padding: 0px; border-style: none; border-width: 0px; max-width: 0px; max-height: 0px;}
-select, input {border-radius: 18px; border:1px dotted #0071b5; font-weight: bolder; height: 28px; background-color:#FFE; cursor: pointer; text-align: center;}
+select, input {border-radius: 18px; border:1px dotted #0071b5; font-weight: bolder; height: 21px; background-color:#FFE; cursor: pointer; text-align: center;}
 div#piano {
  position: relative; color: #808080; height: 82px;
 }

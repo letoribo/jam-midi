@@ -27,7 +27,7 @@
  <option ng-init="_out=list[0]" ng-repeat="i in list" ng-selected="{{i==_out}}" value="{{i}}">{{i}}</option>
 </select>
 <label>Sound: </label><select id=midiSnd ng-change='changeSnd();' ng-model="_sound" ng-init="init()">
- <option ng-init="_sound='Drawbar Organ'" ng-repeat="i in sounds" ng-selected="{{i==_sound}}" value="{{i}}">{{i}}</option>
+ <option  ng-repeat="i in sounds" ng-selected="{{i==_sound}}" value="{{i}}">{{i}}</option> <!--ng-init="_sound='Drawbar Organ'"-->
 </select>
 <label>Scale: </label>
 <select id=scales ng-change='changeScale();' ng-model="_scale">
@@ -61,7 +61,7 @@
   <input type="text" id="text" ng-model="text" ng-focus="setDisabled()" ng-click="SelectAll('#text')"/>
   <input type="submit" class="red" value="Submit"/>
   <ul>
-    <li ng-repeat="jam in items" ng-show="jam" ng-click="retrieve(jam)"><strong>{{jam}}</strong>
+    <li ng-repeat="jam in items" ng-show="jam" ng-mousedown="pos=0" ng-click="retrieve(jam)"><strong>{{jam}}</strong>
      <img src="images/close-icon.png" id="destroy" ng-mousedown="drop(jam)">
     </li>         
   </ul>
@@ -70,11 +70,26 @@
  <img src="images/keyboard.png" id="img" width="600" height="192" ng-click="minimize('#img')" title="click to hide">
 </div>
 <table>
-  <tr ng-repeat="m in msg">
-    <td ng-class="{'On': msg[0] == 144, 'Off': msg[0] == 128, 'Control': msg[0] == 176, 'Program': msg[0] == 192}">{{ m }}</td>  
+  <tr ng-show="row[0].one">
+    <td>
+    <select ng-change='changeBytes();' ng-model="_b0" ng-class="{'On': msg[0] == 144, 'Off': msg[0] == 128, 'Control': msg[0] == 176, 'Program': msg[0] == 192}">
+     <option  ng-repeat="i in Bytes0" ng-selected="{{i==_b0}}" value="{{i}}">{{i}}</option>
+    </select>
+    </td>
+    <td>
+    <select ng-change='changeBytes();' ng-model="_b1" ng-class="{'On': msg[0] == 144, 'Off': msg[0] == 128, 'Control': msg[0] == 176, 'Program': msg[0] == 192}">
+     <option  ng-repeat="i in range(0, 128)" ng-selected="{{i==_b1}}" value="{{i}}">{{i}}</option>
+    </select>
+    </td>
+    <td>
+    <select ng-change='changeBytes();' ng-model="_b2" ng-class="{'On': msg[0] == 144, 'Off': msg[0] == 128, 'Control': msg[0] == 176, 'Program': msg[0] == 192}">
+     <option  ng-repeat="i in range(0, 128)" ng-selected="{{i==_b2}}" value="{{i}}">{{i}}</option>
+    </select>
+    </td> 
   </tr>
 </table>
-
+<img src="images/west.png" id="img" width="75" height="24" ng-mousedown="position('minus')" ng-click="table(pos)" title="rewind" ng-show="row[0].one">
+<img src="images/east.png" id="img" width="75" height="24" ng-mousedown="position('plus')" ng-click="table(pos)" title="forward" ng-show="row[0].one">
 <table>
   <tr ng-repeat="ms in row" ng-show="row[0].one">
    <th>ms</th>

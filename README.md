@@ -104,12 +104,17 @@ app.post('/out', function (req, res) {
   res.send(msg); 
   var timestamp = req.body.timestamp;
   if (!timestamp) song = false;
-  var midi = { '_id' : timestamp, 'msg' : msg };
+   var midi = { '_id' : timestamp, 'msg' : msg };
   insert(song, midi);  
 });
+app.post('/panic', function (req, res) {
+  var msg = req.body.msg;
+  Jazz.MidiOutLong(msg);
+  res.send(msg);
+}); 
 app.post('/OK', function (req, res) {
   song = req.body.song;
-  var cursor = db.collection(song).find();	
+  var cursor = db.collection(song).find().sort( { _id: 1 } );	
   cursor.toArray(function(err, docs){
     var timestamps = docs.map(function(obj){
       return obj._id;
@@ -121,17 +126,34 @@ app.post('/OK', function (req, res) {
 });
 app.post('/All', function (req, res) {
   Song = req.body.song;
-  var cursor = db.collection(song).find();	
+  var cursor = db.collection(song).find().sort( { _id: 1 } );	
   cursor.toArray(function(err, docs){
-  res.send(docs);
+   res.send(docs);
   });
 });
-app.post('/panic', function (req, res) {
+
+/* Querying MongoDB*/
+app.post('/update', function (req, res) {
   var msg = req.body.msg;
   Jazz.MidiOutLong(msg);
   res.send(msg);
-}); 
-/* Querying MongoDB*/
+  var timestamp = req.body._id; 
+  console.dir(msg + " " + timestamp);
+  var query = { '_id' : timestamp };
+  var operator = { '$set' : {'msg': msg} };
+  db.collection(Song).findAndModify( query,
+  [['_id','desc']],
+  operator, // replacement
+  function(err, object) {
+    if (err){
+      console.warn(err.message);
+    } else {
+    	 console.dir("old value: ");
+      console.dir(object);
+    }
+  });   
+});
+
 var insert = function (song, midi) {
   db.collection(song).insert(midi, function(err, inserted) {
     if(err) throw err;
