@@ -32,7 +32,7 @@ div.ebony {
 .controls {
  margin-top: 45px;
 }
-.btn-large {padding: 8px 15px; font-size: 17.5px; -webkit-border-radius: 6px; -moz-border-radius: 6px; border-radius: 6px;  cursor: pointer;}
+.btn-large {padding: 8px 15px; font-size: 17.5px; -webkit-border-radius: 6px; -moz-border-radius: 6px; border-radius: 6px; cursor: pointer;}
 .btn-large:hover { background-color: #BACCDF;}
 .red, .rec {background-color: rgba(186, 44, 44, 0.28);}
 .red:hover { background-color: #FF2424;}
@@ -43,6 +43,8 @@ strong {vertical-align: middle; display: table-cell}
 li:hover { background-color: #EFEFEF;}
 #destroy {position: absolute; right: 0;}
 #destroy:hover { border:1px dotted red;}
+i {font-size: 10px; border: 1px solid grey; background-color: #f1f1f1; padding: 5px; line-height: 200%; -webkit-transition: 0.3s linear; -moz-transition: 0.3s linear; transition: 0.3s linear;}
+i:hover {font-size: 16px; cursor: zoom-in;}
 table, th , td {
   border: 1px solid grey;
   border-collapse: collapse;

@@ -22,6 +22,10 @@ Questions and comments are welcome at http://jazz-soft.org/
     node jam 
 
 and point your browser to localhost:3003
+or use localhost:3003/jam.html
+to view all messages with zoom:
+
+# jam ![jam](http://i.imgur.com/qV3xwVn.jpg)
 
 
 ## jam example
