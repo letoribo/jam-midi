@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="css/piano.css">
 <script src="js/app.js"></script>
 </head>
-<body ng-controller="myController" ng-keydown="onKeyDown($event)" ng-keyup="onKeyUp($event)">
+<body ng-controller="myController" ng-keydown="onKeyDown($event);" ng-keyup="onKeyUp($event);">
 <div id=piano class="Center">
  <div class=ebony ng-model="keys">
   <span  ng-repeat="i in keys.b track by $index" id="{{i}}" ng-class="{'break': i == '|', 'on': isSelected(i)}" ng-mousedown="down(i)" ng-mouseup="up(i)"></span>
@@ -27,7 +27,7 @@
  <option ng-init="_out=list[0]" ng-repeat="i in list" ng-selected="{{i==_out}}" value="{{i}}">{{i}}</option>
 </select>
 <label>Sound: </label><select id=midiSnd ng-change='changeSnd();' ng-model="_sound" ng-init="init()">
- <option  ng-repeat="i in sounds" ng-selected="{{i==_sound}}" value="{{i}}">{{i}}</option> <!--ng-init="_sound='Drawbar Organ'"-->
+ <option  ng-repeat="i in sounds" ng-selected="{{i==_sound}}" value="{{i}}">{{i}}</option>
 </select>
 <label>Scale: </label>
 <select id=scales ng-change='changeScale();' ng-model="_scale">
@@ -38,10 +38,10 @@
   <input type="checkbox" ng-model="checked">
 <strong>MIDI Notes : </strong>{{note}}
 <p class = "controls">
-  <button class="btn-large red" ng-disabled='!stopped || typing' ng-click="rec()">{{recording}}</button> 
+  <button class="btn-large red" ng-disabled='!stopped || typing' ng-click="rec();">{{recording}}</button> 
   <span ng-class="{'rec': recording, 'play': pos}" ng-show="time">{{time}}</span>
   <label class="play">Play:</label>
-  <button class="btn-large" ng-disabled="!state || !text" ng-click="play()">{{playing}}</button>
+  <button class="btn-large" ng-disabled="!state || !text" ng-click="play();">{{playing}}</button>
  <p>
   <label>Volume: </label>{{volume}}
   <div title="volume" ng-jquery-plugin="{ slider : { min: 0, max: 127, value: volume, stop : changeVolume } }"></div>
@@ -56,21 +56,24 @@
  </p>
 </p>
 
-<form ng-submit="submit()" ng-init="getSongsList()">
+<form ng-submit="submit()" ng-init="getSongsList();">
   Enter jam name and hit enter:
-  <input type="text" id="text" ng-model="text" ng-focus="setDisabled()" ng-click="SelectAll('#text')"/>
+  <input type="text" id="text" ng-model="text" ng-focus="setDisabled();" ng-click="SelectAll('#text');"/>
   <input type="submit" class="red" value="Submit"/>
   <ul>
-    <li ng-repeat="jam in items" ng-show="jam" ng-mousedown="pos=0" ng-click="retrieve(jam)"><strong>{{jam}}</strong>
-     <img src="images/close-icon.png" id="destroy" ng-mousedown="drop(jam)">
+    <li ng-repeat="jam in items" ng-show="jam" ng-mousedown="pos=0" ng-click="retrieve(jam);"><strong>{{jam}}</strong>
+     <img src="images/close-icon.png" id="destroy" ng-mousedown="drop(jam);">
     </li>         
   </ul>
 </form>
 <div class="center">
- <img src="images/keyboard.png" id="img" width="600" height="192" ng-click="minimize('#img')" title="click to hide">
+ <img src="images/keyboard.png" id="img" width="600" height="192" ng-click="minimize('#img');" title="click to hide">
 </div>
 <table>
   <tr ng-show="row[0].one">
+    <td>
+     <input type="number" id="_t" ng-model="_t" ng-blur="change_t(_t);" ng-click="SelectAll('#_t');" ng-focus="store(_t);" ng-change="isNumber(_t);">
+    </td>
     <td>
     <select ng-change='changeBytes();' ng-model="_b0" ng-class="{'On': msg[0] == 144, 'Off': msg[0] == 128, 'Control': msg[0] == 176, 'Program': msg[0] == 192}">
      <option  ng-repeat="i in Bytes0" ng-selected="{{i==_b0}}" value="{{i}}">{{i}}</option>
@@ -88,8 +91,8 @@
     </td> 
   </tr>
 </table>
-<img src="images/west.png" id="img" width="75" height="24" ng-mousedown="position('minus')" ng-click="table(pos)" title="rewind" ng-show="row[0].one">
-<img src="images/east.png" id="img" width="75" height="24" ng-mousedown="position('plus')" ng-click="table(pos)" title="forward" ng-show="row[0].one">
+<img src="images/west.png" id="img" width="75" height="24" ng-mousedown="position('minus');" ng-click="table(pos)" title="back" ng-show="row[0].one">
+<img src="images/east.png" id="img" width="75" height="24" ng-mousedown="position('plus');" ng-click="table(pos)" title="forward" ng-show="row[0].one">
 <table>
   <tr ng-repeat="ms in row" ng-show="row[0].one">
    <th>ms</th>

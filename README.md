@@ -7,7 +7,7 @@
 jam is shortcut for **J**azz **A**ngularJS **M**ongoDB
 
 
-![jam-midi](http://i.imgur.com/BUvRmhc.jpg)
+![jam-midi](http://i.imgur.com/tIsLIfU.jpg)
 
 
 API reference is available at http://jazz-soft.net/doc/Jazz-Plugin/reference.html
@@ -80,7 +80,7 @@ app.post('/rec', function (req, res) {
 });
 app.post('/play', function (req, res) {
   var id = req.body;
-  db.collection(Song).findOne(id, function(err, row) {
+  if (Song) db.collection(Song).findOne(id, function(err, row) {
     if(err) throw err;
     if (row) {
       var msg = row.msg;
@@ -93,6 +93,7 @@ app.post('/drop', function (req, res) {
   if (req.body.song)
   song = req.body.song;
   db.dropCollection(song, function(err, result){});
+  Song = null;
   console.log('drop: ' + song);
   res.send('drop: ' + song);
 });
@@ -133,12 +134,33 @@ app.post('/All', function (req, res) {
 });
 
 /* Querying MongoDB*/
+app.post('/remove', function (req, res) {
+  song = req.body.song;
+  if (typeof(req.body.timestamp) !== "undefined") {
+  	 var timestamp = req.body.timestamp;
+  	 db.collection(song).remove({_id: timestamp}, {safe: true}, function(err, result) {
+      if (err) {
+        console.log(err); throw err;
+      }
+    });
+    res.send("removed: " + timestamp);
+  }
+});
+app.post('/insert', function (req, res) {
+  var msg = req.body.msg;
+  var timestamp = req.body.timestamp;
+  res.send(msg);
+  var midi = { '_id' : timestamp, 'msg' : msg };
+  db.collection(Song).insert(midi, function(err, inserted) {
+    if(err) throw err;
+    console.dir("Inserted into: " + song + " " + JSON.stringify(inserted));
+  }); 
+});	
 app.post('/update', function (req, res) {
   var msg = req.body.msg;
   Jazz.MidiOutLong(msg);
   res.send(msg);
   var timestamp = req.body._id; 
-  console.dir(msg + " " + timestamp);
   var query = { '_id' : timestamp };
   var operator = { '$set' : {'msg': msg} };
   db.collection(Song).findAndModify( query,
@@ -153,7 +175,6 @@ app.post('/update', function (req, res) {
     }
   });   
 });
-
 var insert = function (song, midi) {
   db.collection(song).insert(midi, function(err, inserted) {
     if(err) throw err;

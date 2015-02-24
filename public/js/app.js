@@ -30,9 +30,33 @@ function myController($scope, $timeout, $http) {
     $('select').blur();
   };
   
-  $scope.retrieve = function(name) { $scope.text = name;
+  $scope.store = function(t) {
+  	 $scope.old = t;
+  	 console.log($scope.old);
+  };
+  $scope.isNumber = function(t) {
+  if (!angular.isNumber($scope._t)) {$scope._t = $scope.old; return null;}
+  }
+  $scope.change_t = function(t) {
+  	 if (angular.equals(t, null)) {$scope._t = $scope.old; return null;}
+    var remove_id = $scope.timestamps[0] + $scope.old;
+    var insert_id = $scope.timestamps[0] + t;
+    if (insert_id !== remove_id)
+    if ($scope.timestamps.indexOf(insert_id) == -1)
+    $http.post('/remove', {song: $scope.text, timestamp: remove_id}).success(function (response) {
+    	console.log(response);
+      $http.post('/insert', {timestamp: insert_id, msg: [Number($scope._b0), Number($scope._b1), Number($scope._b2)]}).success(function (response) { 
+        $scope.retrieve($scope.text);
+      });
+    })
+    else {alert ("duplicate id!")}    
+  };
+  
+  $scope.retrieve = function(name) {
+  	 if (!$scope.State) return null; 
+    $scope.text = name;
     $http.post('/OK', {song: name}).success(function (response) {
-      $scope.timestamps = response;
+      $scope.timestamps = response; $scope._t = $scope.timestamps[$scope.pos] - $scope.timestamps[0];
       console.log($scope.timestamps);
     });
     $scope.pos = 0;
@@ -42,14 +66,17 @@ function myController($scope, $timeout, $http) {
   $scope.retrieveAll = function(name) {
     $http.post('/All', {song: name}).success(function (response) {
       $scope.All = response;
-      var row = response; $scope.msg = row[0].msg; 
-      $scope._b0 = row[0].msg[0];
-      $scope._b1 = row[0].msg[1];
-      $scope._b2 = row[0].msg[2];
+      var all = response; 
+      if (all.length > 0) {
+      $scope.msg = all[0].msg; 
+      $scope._b0 = all[0].msg[0];
+      $scope._b1 = all[0].msg[1];
+      $scope._b2 = all[0].msg[2];
       $scope.row = [{
-    	  one: row[0], two: row[1], three: row[2], four: row[3], five: row[4], six: row[5],
-        seven: row[6], eight: row[7]
+    	  one: all[0], two: all[1], three: all[2], four: all[3], five: all[4], six: all[5],
+        seven: all[6], eight: all[7]
       }];
+      }
     });   
   };
   
@@ -73,14 +100,15 @@ function myController($scope, $timeout, $http) {
   };
   
   $scope.table = function(p) {
-    var row = $scope.All;
+    var all = $scope.All;
     $scope.row = [{
-    	one: row[p], two: row[p+1], three: row[p+2], four: row[p+3], five: row[p+4], six: row[p+5],
-      seven: row[p+6], eight: row[p+7]
+    	one: all[p], two: all[p+1], three: all[p+2], four: all[p+3], five: all[p+4], six: all[p+5],
+      seven: all[p+6], eight: all[p+7]
     }];
     $scope._b0 = $scope.row[0].one.msg[0];
     $scope._b1 = $scope.row[0].one.msg[1];
     $scope._b2 = $scope.row[0].one.msg[2];
+    $scope._t = $scope.timestamps[$scope.pos] - $scope.timestamps[0];
   }
   
   $scope.render = function (time) {
@@ -98,9 +126,9 @@ function myController($scope, $timeout, $http) {
             var id = response[1]; $scope._b1 = id;            
             if (status == 144) $scope.note.push(id);
             if (status == 128) $scope.note.splice($scope.note.indexOf(id),1);           
-          });    
+          });
+          $scope.table($scope.pos);    
           $scope.pos ++;
-          $scope.table($scope.pos - 1);
           if ($scope.pos == $scope.All.length) {$scope.State = false; $scope.play();}
         }
       });      
@@ -118,6 +146,7 @@ function myController($scope, $timeout, $http) {
       $scope.stopped = true;
       $scope.pos = null;
       $scope.note = [];
+      $scope.time = null;
       $("button").blur();
     } 
     else {
@@ -218,9 +247,12 @@ function myController($scope, $timeout, $http) {
   } 
   
   $scope.drop = function(li) {
+  	 if (!$scope.State) return null;
     $http.post('/drop', {song: li});
     $scope.getSongsList();
     $scope.text = '';
+    $scope.row = null;
+    $scope.time = null;
   }
   
   $scope.changemidi = function() {
@@ -231,12 +263,13 @@ function myController($scope, $timeout, $http) {
   };  
   
   $scope.onKeyDown = function ($event) {
+    if ($event.target.id === "_t") return null;
     var theKey = arguments[0].keyCode;
     if (keyAllowed [theKey] === false) return;
     keyAllowed [theKey] = false;
     var all = $('span'); all.removeClass("col");
     if (theKey == 38) {
-      Object.keys(steps[$scope.current_scale]).map(function(value, index){
+      Object.keys(steps[$scope.current_scale]).map(function(value, index){ console.log(value);
         steps[$scope.current_scale][value] ++;
         var sel = $('#' + steps[$scope.current_scale][value]); 
         sel.addClass("col");
@@ -262,6 +295,7 @@ function myController($scope, $timeout, $http) {
   };
 
   $scope.onKeyUp = function ($event) {
+  	 if ($event.target.id === "_t") return null;
     var theKey = arguments[0].keyCode;
     keyAllowed [theKey] = true;
     var key = steps[$scope.current_scale][theKey];
