@@ -76,7 +76,7 @@ app.post('/out', function (req, res) {
   res.send(msg); 
   var timestamp = req.body.timestamp;
   if (!timestamp) song = false;
-   var midi = { '_id' : timestamp, 'msg' : msg };
+  var midi = { '_id' : timestamp, 'msg' : msg };
   insert(song, midi);  
 });
 app.post('/panic', function (req, res) {
@@ -100,7 +100,7 @@ app.post('/All', function (req, res) {
   Song = req.body.song;
   var cursor = db.collection(song).find().sort( { _id: 1 } );	
   cursor.toArray(function(err, docs){
-   res.send(docs);
+    res.send(docs);
   });
 });
 
@@ -141,7 +141,7 @@ app.post('/update', function (req, res) {
     if (err){
       console.warn(err.message);
     } else {
-    	 console.dir("old value: ");
+    	console.dir("old value: ");
       console.dir(object);
     }
   });   

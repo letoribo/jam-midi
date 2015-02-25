@@ -1,4 +1,4 @@
-# jam-midi ![jam-midi](http://i.imgur.com/uN7xa7t.png)
+# jam-midi ![jam-midi](http://i.imgur.com/OaV23Kq.jpg)
 
 
 ### AngularJS computer keyboard piano maintained MongoDB
@@ -25,7 +25,7 @@ and point your browser to localhost:3003
 or use localhost:3003/jam.html
 to view all messages with zoom:
 
-![jam](http://i.imgur.com/qV3xwVn.jpg)
+![jam](http://i.imgur.com/2BtmCca.jpg)
 
 
 ## jam example
@@ -109,7 +109,7 @@ app.post('/out', function (req, res) {
   res.send(msg); 
   var timestamp = req.body.timestamp;
   if (!timestamp) song = false;
-   var midi = { '_id' : timestamp, 'msg' : msg };
+  var midi = { '_id' : timestamp, 'msg' : msg };
   insert(song, midi);  
 });
 app.post('/panic', function (req, res) {
@@ -133,7 +133,7 @@ app.post('/All', function (req, res) {
   Song = req.body.song;
   var cursor = db.collection(song).find().sort( { _id: 1 } );	
   cursor.toArray(function(err, docs){
-   res.send(docs);
+    res.send(docs);
   });
 });
 

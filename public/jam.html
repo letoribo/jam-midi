@@ -6,19 +6,16 @@
 <script src="js/jquery.min.js"></script>
 <script src="js/keys.js" type="text/javascript"></script>
 <script src="js/gmidi.js"></script>
-<script src="js/jquery-ui.min.js"></script>
-<script src="js/pragmatic-angular.js"></script>
-<link rel="stylesheet" href="css/jquery-ui.min.css">
 <link rel="stylesheet" href="css/piano.css">
 <script src="js/jam.js"></script>
 </head>
 <body ng-controller="myController" ng-keydown="onKeyDown($event);" ng-keyup="onKeyUp($event);">
 <div id=piano class="Center">
  <div class=ebony ng-model="keys">
-  <span  ng-repeat="i in keys.b track by $index" id="{{i}}" ng-class="{'break': i == '|', 'on': isSelected(i)}" ng-mousedown="down(i)" ng-mouseup="up(i)"></span>
+  <span  ng-repeat="i in keys.b track by $index" id="{{i}}" ng-class="{'break': i == '|', 'on': isSelected(i)}" ng-mousedown="down(i);" ng-mouseup="up(i);"></span>
  </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
  <div class=ivory ng-model="keys">
-  <span  ng-repeat="i in keys.w" id="{{i}}" ng-mousedown="down(i)" ng-mouseup="up(i)" ng-class="{'on': isSelected(i)}"></span> 
+  <span  ng-repeat="i in keys.w" id="{{i}}" ng-mousedown="down(i);" ng-mouseup="up(i);" ng-class="{'on': isSelected(i)}"></span> 
  </div>
 </div>
 <center>
@@ -34,8 +31,6 @@
  <option ng-init="_scale='natural major'" ng-repeat="i in scales" ng-selected="{{i==_scale}}" value="{{i}}">{{i}}</option>
 </select>
 </p>
-<label>Sustain: </label>
-  <input type="checkbox" ng-model="checked">
 <strong>MIDI Notes : </strong>{{note}}
 <p class = "controls">
   <button class="btn-large red" ng-disabled='!stopped || typing' ng-click="rec();">{{recording}}</button> 
@@ -43,19 +38,16 @@
   <label class="play">Play:</label>
   <button class="btn-large" ng-disabled="!state || !text" ng-click="play();">{{playing}}</button>
  <p>
+  <input type="range" id="volume" min="0" max="127" ng-mouseup="changeVolume();" ng-model="volume" class="vVertical"/>
   <label>Volume: </label>{{volume}}
-  <div title="volume" ng-jquery-plugin="{ slider : { min: 0, max: 127, value: volume, stop : changeVolume } }"></div>
- </p>
- <p>
-  <label>Modulation: </label>{{modulation}}
-  <div title="modulation" ng-jquery-plugin="{ slider : { min: 0, max: 127, value: modulation, stop : changeModulation } }"></div>
- </p>
- <p>
+  <input type="range" id="pan" min="0" max="127" ng-mouseup="changePan();" ng-model="pan" class="vVertical"/>
   <label>Pan: </label>{{pan}}
-  <div title="pan" ng-jquery-plugin="{ slider : { min: 0, max: 127, value: pan, stop : changePan } }"></div>
- </p>
-</p>
-
+  <input type="range" id="modulation" min="0" max="127" ng-mouseup="changeModulation();" ng-model="modulation" class="vVertical"/> 
+  <label>Modulation: </label>{{modulation}}
+ </p><br> 
+  <strong>Sustain: </strong>
+  <input type="checkbox" ng-model="checked"> 
+</p><br>
 <form ng-submit="submit()" ng-init="getSongsList();">
   Enter jam name and hit enter:
   <input type="text" id="text" ng-model="text" ng-focus="setDisabled();" ng-click="SelectAll('#text');"/>
@@ -91,17 +83,16 @@
     </td> 
   </tr>
 </table>
+<input type="range" ng-change="getifs();" ng-model="ifs" ng-show="row[0]" class="vHorizon"/>
 <p>
 <img src="images/west.png" id="img" width="75" height="24" ng-mousedown="position('minus');" ng-click="table(pos)" title="back" ng-show="row[0]">
 <img src="images/east.png" id="img" width="75" height="24" ng-mousedown="position('plus');" ng-click="table(pos)" title="forward" ng-show="row[0]">
 </p>
-<i ng-repeat="ms in row track by $index" ng-show="row[$index]"> 
-    
+<i ng-repeat="ms in row track by $index" ng-style="myStyle" ng-show="row[$index]">     
     <i ng-show="row[$index]">{{ row[$index]._id - timestamps[0] }}</i>
-
     <i ng-show="row[$index]" ng-class="{'On': ms.msg[0] == 144, 'Off': ms.msg[0] == 128, 'Control': ms.msg[0] == 176, 'Program': ms.msg[0] == 192}">{{ row[$index].msg }}</i>
-
  </i>
+
 </center> 
 
 </body>
