@@ -1,4 +1,4 @@
-# jam-midi ![jam-midi](http://i.imgur.com/OaV23Kq.jpg)
+# jam-midi ![jam-midi](http://i.imgur.com/uN7xa7t.png)
 
 
 ### AngularJS computer keyboard piano maintained MongoDB
@@ -7,7 +7,7 @@
 jam is shortcut for **J**azz **A**ngularJS **M**ongoDB
 
 
-![jam-midi](http://i.imgur.com/tIsLIfU.jpg)
+![jam-midi](http://i.imgur.com/OaV23Kq.jpg)
 
 
 API reference is available at http://jazz-soft.net/doc/Jazz-Plugin/reference.html
