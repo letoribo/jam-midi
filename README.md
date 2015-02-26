@@ -174,7 +174,7 @@ app.post('/update', function (req, res) {
     if (err){
       console.warn(err.message);
     } else {
-    	 console.dir("old value: ");
+    	console.dir("old value: ");
       console.dir(object);
     }
   });   

@@ -1,4 +1,4 @@
-var myModule = angular.module('myModule', ['pragmatic-angular']);
+var myModule = angular.module('myModule', []);
 function myController($scope, $timeout, $http) {
   $scope.note = [];
   $scope.scales = Scales;
@@ -313,25 +313,21 @@ function myController($scope, $timeout, $http) {
     $('select').blur();
   };
   
-  $scope.changeVolume = function(event, ui) {
-    $scope.volume = ui.value;
+  $scope.changeVolume = function() {
     $scope.time = $.now() - $scope.current;
-    $scope.send({timestamp: $scope.time, msg: [0xb0, 7, ui.value]});
-    $scope.$apply();
+    $scope.send({timestamp: $scope.time, msg: [0xb0, 7, Number($scope.volume)]});
+    $('input').blur();
+  };
+ 
+  $scope.changeModulation = function() {
+    $scope.time = $.now() - $scope.current;
+    $scope.send({timestamp: $scope.time, msg: [0xb0, 1, Number($scope.modulation)]});
+    $('input').blur();
   };
   
-  $scope.changeModulation = function(event, ui) {
-    $scope.modulation = ui.value;
+  $scope.changePan = function() {
     $scope.time = $.now() - $scope.current;
-    $scope.send({timestamp: $scope.time, msg: [0xb0, 1, ui.value]});
-    $scope.$apply();
-  };
-  
-  $scope.changePan = function(event, ui) {
-    $scope.pan = ui.value;
-    $scope.time = $.now() - $scope.current;
-    $scope.send({timestamp: $scope.time, msg: [0xb0, 10, ui.value]});
-    $scope.$apply();
+    $scope.send({timestamp: $scope.time, msg: [0xb0, 10, Number($scope.pan)]});
   };
 
   $scope.$watch('checked', function(value) {
