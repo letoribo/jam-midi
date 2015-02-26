@@ -51,7 +51,7 @@
  <img src="images/keyboard.png" width="600" height="192" ng-style="myStyle" ng-click="myStyle={opacity:0}" title="click to hide">
 </div>
 <table>
-  <tr ng-repeat="m in msg">
+  <tr ng-repeat="m in msg track by $index">
     <td ng-class="{'On': msg[0] == 144, 'Off': msg[0] == 128, 'Control': msg[0] == 176, 'Program': msg[0] == 192}">{{ m }}</td>  
   </tr>
 </table>
