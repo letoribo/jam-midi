@@ -1,4 +1,5 @@
-# jam-midi ![jam-midi](http://i.imgur.com/uN7xa7t.png)
+# jam-midi
+![jam-midi](http://i.imgur.com/uN7xa7t.png)
 
 
 ### AngularJS computer keyboard piano maintained MongoDB

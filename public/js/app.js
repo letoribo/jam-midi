@@ -164,22 +164,22 @@ function myController($scope, $timeout, $http) {
       array.push(i);
     }
     return array;
-  } 
+  }; 
  
   $scope.keys = {
     b: [1,3,'|',6,8,10,'|',13,15,'|',18,20,22,'|',25,27,'|',30,32,34,'|',37,39,'|',42,44,46,'|',49,51,'|',54,56,58,'|',61,63,'|',66,68,70,'|',73,75,'|',78,80,82,'|',85,87,'|',90,92,94,'|',97,99,'|',102,104,106,'|',109,111,'|',114,116,118,'|',121,123,'|',126],
     w: [0,2,4,5,7,9,11,12,14,16,17,19,21,23,24,26,28,29,31,33,35,36,38,40,41,43,45,47,48,50,52,53,55,57,59,60,62,64,65,67,69,71,72,74,76,77,79,81,83,84,86,88,89,91,93,95,96,98,100,101,103,105,107,108,110,112,113,115,117,119,120,122,124,125,127]
-  }
+  };
   $scope.down = function(id){
   	 $scope.time = $.now() - $scope.current;
   	 $scope.send({timestamp: $scope.time, msg: [0x90, id, $scope.volume]});
     $scope.note.push(id);
-  }	
+  };	
   $scope.up = function(id){ 
     $scope.time = $.now() - $scope.current;
     $scope.send({timestamp: $scope.time, msg: [0x80, id, 0]});
     $scope.note.splice($scope.note.indexOf(id),1);
-  }	
+  };	
 
   $scope.changeSnd = function() {
   	 $scope.time = $.now() - $scope.current;
@@ -193,15 +193,11 @@ function myController($scope, $timeout, $http) {
   };
 
   steps = keys;
+  $scope.Keys = [];
+  
   if (/Firefox[\/\s](\d+\.\d+)/.test(navigator.userAgent)) {steps = _keys};
   $scope.current_scale = 0;
   keyAllowed = {};
-  $scope.highlight = function () {
-  	 angular.forEach(steps[$scope.current_scale], function(value) {
-      var sel = $('#' + value); 
-      sel.addClass("col");
-    }); 
-  } 
 
   $scope.isSelected = function (id) {
     if( $scope.note.indexOf(id) > -1){
@@ -209,6 +205,13 @@ function myController($scope, $timeout, $http) {
     }
     return false;
   };   
+
+  $scope.isCol = function (id) {
+    if( $scope.Keys.indexOf(id) > -1){
+      return true;
+    }
+    return false;
+  };  
   
   $scope.data = {}
   
@@ -217,7 +220,7 @@ function myController($scope, $timeout, $http) {
       method: 'POST',
       url: '/post',
       data: send
-    })  
+    });  
 
     posting.success(function (response) {
       /*executed when server responds back*/
@@ -267,19 +270,17 @@ function myController($scope, $timeout, $http) {
     var theKey = arguments[0].keyCode;
     if (keyAllowed [theKey] === false) return;
     keyAllowed [theKey] = false;
-    var all = $('span'); all.removeClass("col");
+    $scope.Keys = [];
     if (theKey == 38) {
-      Object.keys(steps[$scope.current_scale]).map(function(value, index){ console.log(value);
+      Object.keys(steps[$scope.current_scale]).map(function(value, index){
         steps[$scope.current_scale][value] ++;
-        var sel = $('#' + steps[$scope.current_scale][value]); 
-        sel.addClass("col");
+        $scope.Keys = []; $scope.highlight();
       });
     }; 
     if (theKey == 40) {
       Object.keys(steps[$scope.current_scale]).map(function(value, index){
         steps[$scope.current_scale][value] --;
-        var sel = $('#' + steps[$scope.current_scale][value]); 
-        sel.addClass("col");
+        $scope.Keys = []; $scope.highlight();
       })
     };
     if (theKey == 32 && $scope.stopped) {
@@ -308,9 +309,14 @@ function myController($scope, $timeout, $http) {
     
   $scope.changeScale = function() {
     $scope.current_scale = $scope.scales.indexOf($scope._scale);
-    var all = $('span'); all.removeClass("col");
     $scope.highlight();
     $('select').blur();
+  };
+  
+    $scope.highlight = function() {
+    $.each(steps[$scope.current_scale], function(k, v) {
+      $scope.Keys.push(v);
+    });
   };
   
   $scope.changeVolume = function() {
@@ -328,6 +334,7 @@ function myController($scope, $timeout, $http) {
   $scope.changePan = function() {
     $scope.time = $.now() - $scope.current;
     $scope.send({timestamp: $scope.time, msg: [0xb0, 10, Number($scope.pan)]});
+    $('input').blur();
   };
 
   $scope.$watch('checked', function(value) {
@@ -346,19 +353,19 @@ function myController($scope, $timeout, $http) {
   };
   $scope.SelectAll = function(id) {
     $(id).focus().select();
-  }
+  };
   $scope.position = function(sign) {
   	 if ($scope.pos == null) $scope.pos = 0;
     sign === "minus" ? $scope.pos > 0 ? $scope.pos -- : null : $scope.pos ++;
     if ($scope.pos < $scope.All.length) {$scope.msg = $scope.All[$scope.pos].msg}
     else {$scope.pos = 0}
-  } 
+  }; 
   $scope.minimize = function(id) {
     $(id).attr( "width", 0 ).attr( "height", 0 );
-  } 
+  }; 
   $scope.typing = function() {
     return true;
-  }
+  };
 
   $scope.setDisabled = function() {
   	 $scope.typing = true;

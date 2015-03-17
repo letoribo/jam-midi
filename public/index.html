@@ -11,11 +11,11 @@
 </head>
 <body ng-controller="myController" ng-keydown="onKeyDown($event);" ng-keyup="onKeyUp($event);">
 <div id=piano class="Center">
- <div class=ebony ng-model="keys">
-  <span  ng-repeat="i in keys.b track by $index" id="{{i}}" ng-class="{'break': i == '|', 'on': isSelected(i)}" ng-mousedown="down(i);" ng-mouseup="up(i);"></span>
+ <div class=ebony>
+  <span  ng-repeat="i in keys.b track by $index" id="{{i}}" ng-class="{'break': i == '|', 'on': isSelected(i), 'col': isCol(i)}" ng-mousedown="down(i)" ng-mouseup="up(i)"></span>
  </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
  <div class=ivory ng-model="keys">
-  <span  ng-repeat="i in keys.w" id="{{i}}" ng-mousedown="down(i);" ng-mouseup="up(i);" ng-class="{'on': isSelected(i)}"></span> 
+  <span  ng-repeat="i in keys.w" id="{{i}}" ng-mousedown="down(i)" ng-mouseup="up(i)" ng-class="{'on': isSelected(i), 'col': isCol(i)}"></span> 
  </div>
 </div>
 <center>
