@@ -1,5 +1,5 @@
 var myModule = angular.module('myModule', []);
-function myController($scope, $timeout, $http) {
+function myController($scope, $http) {
   $scope.note = [];
   $scope.scales = Scales;
   $scope._scale='natural major,ionian';
