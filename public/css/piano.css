@@ -64,6 +64,9 @@ input[type=range].vVertical {
  -webkit-appearance: none; background-color: #EFEFEF; width: 90px; height:10px; margin-top: 40px; -webkit-transform:rotate(270deg); -moz-transform:rotate(270deg);
  -o-transform:rotate(270deg); -ms-transform:rotate(270deg); transform:rotate(270deg); z-index: 0;
 }
+input[type=range].vHorizon {
+ -webkit-appearance: none; background-color: #EFEFEF; margin-top: 20px; height: 10px; width:200px;
+}
 input[type="range"]::-webkit-slider-thumb {
  -webkit-appearance: none; border: 1px solid #611790; background-color: #EBCAF1; width: 20px; height: 20px;
 }
