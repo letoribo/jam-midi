@@ -19,7 +19,7 @@
   	 "jazz-midi": "*",
   	 "express": "*",
     "body-parser": "^1.16.0",
-    "serve-favicon": "^2.3.2"   
+    "serve-favicon": "^2.3.2",   
     "mongodb": "~2.0"    
   },
   "scripts": {
