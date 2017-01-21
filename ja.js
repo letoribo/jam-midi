@@ -1,14 +1,16 @@
 var jazz = require('jazz-midi')
 , Jazz = new jazz.MIDI()
 , express = require('express')
+, favicon = require('serve-favicon')
+, bodyParser = require('body-parser')
 , http = require('http'), path = require('path');
 
 var out = Jazz.MidiOutOpen(0);
 var list = Jazz.MidiOutList();
 var app = express();
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.bodyParser());
-app.use(express.favicon('public/images/favicon.ico'));
+app.use(bodyParser.json());
+app.use(favicon(__dirname + '/public/images/favicon.ico'));
 
 app.post('/post', function (req, res) {
   var msg = req.body.msg; 

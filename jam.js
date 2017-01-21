@@ -2,14 +2,16 @@ var jazz = require('jazz-midi')
 , Jazz = new jazz.MIDI()
 , MongoClient = require('mongodb').MongoClient
 , express = require('express')
+, favicon = require('serve-favicon')
+, bodyParser = require('body-parser')
 , http = require('http')
 , path = require('path');
 var out = Jazz.MidiOutOpen(0);
 var list = Jazz.MidiOutList();
 var app = express();
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.bodyParser());
-app.use(express.favicon('public/images/favicon.ico'));
+app.use(bodyParser.json());
+app.use(favicon(__dirname + '/public/images/favicon.ico'));
 var db, song, Song;
 
 MongoClient.connect('mongodb://localhost:27017/npm', function(err, database) {
