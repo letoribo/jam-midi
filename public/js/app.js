@@ -33,7 +33,6 @@ function myController($scope, $http) { //window.scope = $scope;
   
   $scope.store = function(t) {
   	 $scope.old = t;
-  	 console.log($scope.old);
   }
   
   $scope.isNumber = function(t) {
@@ -41,18 +40,17 @@ function myController($scope, $http) { //window.scope = $scope;
   }
   
   $scope.change_t = function(t) {
+  	 console.log($scope.timestamps);
   	 if (angular.equals(t, null)) {$scope._t = $scope.old; return;}
     var remove_id = $scope.timestamps[0] + $scope.old;
     var insert_id = $scope.timestamps[0] + t;
-    if (insert_id !== remove_id)
-    if ($scope.timestamps.indexOf(insert_id) == -1)
+    if ($scope.timestamps.indexOf(insert_id) !== -1) return;
     $http.post('/remove', {song: $scope.text, timestamp: remove_id}).success(function (response) {
     	console.log(response);
       $http.post('/insert', {timestamp: insert_id, msg: [Number($scope._b0), Number($scope._b1), Number($scope._b2)]}).success(function (response) { 
         $scope.retrieve($scope.text);
       });
     })
-    else {alert ("duplicate id!")}    
   }
   
   $scope.retrieve = function(name) {
@@ -86,7 +84,7 @@ function myController($scope, $http) { //window.scope = $scope;
   }
   
   $scope.rec = function() {
-  	 var text = $scope.text; console.log(text);
+  	 var text = $scope.text;
   	 if (text == "") return; 
     $scope.state = !$scope.state;
     
@@ -329,20 +327,17 @@ function myController($scope, $http) { //window.scope = $scope;
   }
   
   $scope.changeVolume = function() {
-    $scope.time = $.now() - $scope.current;
-    $scope.send({timestamp: $scope.time, msg: [0xb0, 7, Number($scope.volume)]});
+    $scope.send({timestamp: recTime(), msg: [0xb0, 7, Number($scope.volume)]});
     $('input').blur();
   }
  
   $scope.changeModulation = function() {
-    $scope.time = $.now() - $scope.current;
-    $scope.send({timestamp: $scope.time, msg: [0xb0, 1, Number($scope.modulation)]});
+    $scope.send({timestamp: recTime(), msg: [0xb0, 1, Number($scope.modulation)]});
     $('input').blur();
   }
   
   $scope.changePan = function() {
-    $scope.time = $.now() - $scope.current;
-    $scope.send({timestamp: $scope.time, msg: [0xb0, 10, Number($scope.pan)]});
+    $scope.send({timestamp: recTime(), msg: [0xb0, 10, Number($scope.pan)]});
     $('input').blur();
   }
 
@@ -380,5 +375,4 @@ function myController($scope, $http) { //window.scope = $scope;
      var current = $scope.current;
      return $scope.time = current ? $.now() - current : null;
   }
-
 }
