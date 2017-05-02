@@ -36,11 +36,13 @@ app.post('/list', function (req, res) {
   res.send(list);
 });
 app.post('/songs', function (req, res) {
-  db.collections(function(err, collections){
-  	 var colls = collections.map(function(obj){
-      return obj.collectionName === "system.indexes" ? null : obj.collectionName;
+  db.listCollections().toArray(function(err, collections){
+  	 var colls = collections.filter(function(obj){
+      return obj.name !== "system.indexes" && !obj.name.startsWith("objectlabs-system");
+    }).map(function(obj){
+      return obj.name;
     });
-  	 res.send(colls);
+    res.send(colls);
   });
 });
 app.post('/rec', function (req, res) {

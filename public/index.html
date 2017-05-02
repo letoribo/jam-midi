@@ -36,7 +36,7 @@
   <button class="btn-large red" ng-disabled='!stopped || typing' ng-click="rec();">{{recording}}</button> 
   <span ng-class="{'rec': recording, 'play': pos}" ng-show="time">{{time}}</span>
   <label class="play">Play:</label>
-  <button class="btn-large" ng-disabled="!state || !text" ng-click="play();">{{playing}}</button>
+  <button class="btn-large" ng-disabled="!state || disabled" ng-click="play();">{{playing}}</button>
  <p>
   <input type="range" id="volume" min="0" max="127" ng-mouseup="changeVolume();" ng-model="volume" class="vVertical"/>
   <label>Volume: </label>{{volume}}
@@ -50,7 +50,7 @@
 </p><br>
 <form ng-submit="submit()" ng-init="getSongsList();">
   Enter jam name and hit enter:
-  <input type="text" id="text" ng-model="text" ng-focus="setDisabled();" ng-click="SelectAll('#text');"/>
+  <input type="text" id="text" ng-model="text" ng-click="SelectAll('#text');"/>
   <input type="submit" class="red" value="Submit"/>
   <ul>
     <li ng-repeat="jam in items" ng-show="jam" ng-mousedown="pos=0" ng-click="retrieve(jam);"><strong>{{jam}}</strong>

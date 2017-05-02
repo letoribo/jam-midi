@@ -19,8 +19,6 @@ Questions and comments are welcome at http://jazz-soft.org/
 
 ## How to jam?
 
-    npm install jam-midi
-    
     
 ## jam example    
     node jam 
@@ -34,7 +32,7 @@ to view all messages with zoom:
 
 
 <img src="http://i.imgur.com/7KnCa5a.png" width="200"> example
-- Open [mongolab.com](https://mongolab.com) website
+- Open [mlab.com](https://mlab.com) website
 - Click **Sign up** button
 - Fill in your user information then hit **Create account**
 - From the dashboard, click on **Create new** button
@@ -48,7 +46,7 @@ to view all messages with zoom:
  - *A database user is required to connect to this database.* **Click here** *to create a new one.*
 - Click the link and fill in **DB Username** and **DB Password** fields
 - Finally, in `jam.js` instead of `'mongodb://localhost:27017/npm'`, use the following URI with your credentials:
- - `'mongodb://USERNAME:PASSWORD@ds*****.mongolab.com:*****/DATABASE_NAME'`
+ - `'mongodb://USERNAME:PASSWORD@ds*****.mlab.com:*****/DATABASE_NAME'`
  
  ![Mongolab](http://i.imgur.com/8UBmspM.jpg)
 
